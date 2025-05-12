@@ -10,8 +10,6 @@ import {
   Image as ImageIcon,
   Youtube as YoutubeIcon,
   Code,
-  Heading1,
-  Heading2,
   Quote,
   Undo,
   Redo,
@@ -20,6 +18,7 @@ import { ToolbarButton } from "./ToolbarButton";
 import { LinkDialog } from "./dialogs/LinkDialog";
 import { ImageDialog } from "./dialogs/ImageDialog";
 import { YoutubeDialog } from "./dialogs/YoutubeDialog";
+import { HeadingDropdown } from "./HeadingDropdown";
 
 interface EditorToolbarProps {
   editor: Editor | null;
@@ -48,19 +47,7 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
         <Italic size={18} />
       </ToolbarButton>
       
-      <ToolbarButton 
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        isActive={editor.isActive("heading", { level: 1 })}
-      >
-        <Heading1 size={18} />
-      </ToolbarButton>
-      
-      <ToolbarButton 
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        isActive={editor.isActive("heading", { level: 2 })}
-      >
-        <Heading2 size={18} />
-      </ToolbarButton>
+      <HeadingDropdown editor={editor} />
       
       <ToolbarButton 
         onClick={() => editor.chain().focus().toggleBulletList().run()}

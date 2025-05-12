@@ -6,7 +6,11 @@ import Youtube from "@tiptap/extension-youtube";
 import Placeholder from "@tiptap/extension-placeholder";
 
 export const getEditorExtensions = (placeholder: string = "Start writing...") => [
-  StarterKit,
+  StarterKit.configure({
+    heading: {
+      levels: [1, 2, 3, 4, 5, 6],
+    },
+  }),
   Link.configure({
     openOnClick: false,
     HTMLAttributes: {
