@@ -21,12 +21,9 @@ import {
   Code,
   Heading1,
   Heading2,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
+  Quote,
   Undo,
   Redo,
-  Quote,
 } from "lucide-react";
 
 type TiptapEditorProps = {
