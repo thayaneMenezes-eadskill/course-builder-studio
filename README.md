@@ -1,73 +1,63 @@
-# Welcome to your Lovable project
+# Course Builder Studio
 
-## Project info
+## Overview
 
-**URL**: https://lovable.dev/projects/d7504c05-279a-4f09-845b-b375946c0862
+Course Builder Studio is a web application designed to help you create, edit, and manage course modules with ease. Built with modern technologies like React, TypeScript, and Tailwind CSS, it provides a user-friendly interface for course creators.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **Create Modules**: Add new modules to your course with a single click. Each module comes with a default title and content that you can customize.
+- **Edit Modules**: Use the rich text editor to modify the content of your modules. Save your changes seamlessly.
+- **Delete Modules**: Remove unwanted modules from your course. The app ensures you always have at least one module.
+- **Sidebar Navigation**: Quickly navigate between modules using the sidebar. The active module is highlighted for better visibility.
 
-**Use Lovable**
+## Getting Started
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d7504c05-279a-4f09-845b-b375946c0862) and start prompting.
+### Prerequisites
 
-Changes made via Lovable will be committed automatically to this repo.
+Make sure you have the following installed on your system:
 
-**Use your preferred IDE**
+- [Node.js](https://nodejs.org/) (v16 or higher)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. Clone the repository:
+   ```sh
+   git clone <YOUR_GIT_URL>
+   ```
 
-Follow these steps:
+2. Navigate to the project directory:
+   ```sh
+   cd course-builder-studio
+   ```
 
+3. Install dependencies:
+   ```sh
+   npm install
+   ```
+
+### Running the Development Server
+
+Start the development server with hot reloading:
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:3000`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Project Structure
 
-**Use GitHub Codespaces**
+- **`src/components`**: Contains the main UI components like `Dashboard`, `Sidebar`, and `ModuleEditor`.
+- **`src/contexts`**: Includes the `ModuleContext` for managing the state of modules.
+- **`src/ui`**: Reusable UI components like buttons, dialogs, and forms.
+- **`src/types`**: Type definitions for modules and other entities.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
 
-## What technologies are used for this project?
+## Technologies Used
 
-This project is built with:
+- **React**: For building the user interface.
+- **TypeScript**: For type-safe development.
+- **Tailwind CSS**: For styling.
+- **Vite**: For fast development and build tooling.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/d7504c05-279a-4f09-845b-b375946c0862) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
