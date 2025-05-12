@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { TiptapEditor } from "./TiptapEditor";
 import { useModules } from "@/contexts/ModuleContext";
@@ -7,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 interface ModuleEditorProps {
   moduleId: string;
+  onSave: () => void;
 }
 
 const ModuleEditor = ({ moduleId }: ModuleEditorProps) => {
@@ -34,8 +34,8 @@ const ModuleEditor = ({ moduleId }: ModuleEditorProps) => {
   };
 
   return (
-    <Card className="border-none shadow-none">
-      <CardContent className="p-0">
+    <Card className="border-none h-full">
+      <CardContent className="p-0 h-full">
         <Input
           value={title}
           onChange={handleTitleChange}

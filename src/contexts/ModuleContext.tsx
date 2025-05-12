@@ -22,7 +22,6 @@ export const ModuleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [modules, setModules] = useState<Module[]>([]);
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
 
-  // Load modules from localStorage on initial render
   useEffect(() => {
     try {
       const storedModules = localStorage.getItem(STORAGE_KEY);
@@ -33,13 +32,11 @@ export const ModuleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         }));
         
         setModules(parsedModules);
-        
-        // Set first module as active if exists and no active module is set
+
         if (parsedModules.length > 0 && !activeModuleId) {
           setActiveModuleId(parsedModules[0].id);
         }
       } else {
-        // Create a default module if no modules exist
         const defaultModule: Module = {
           id: uuidv4(),
           title: "Introduction",
@@ -58,7 +55,6 @@ export const ModuleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, []);
 
-  // Save modules to localStorage whenever they change
   useEffect(() => {
     if (modules.length > 0) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(modules));

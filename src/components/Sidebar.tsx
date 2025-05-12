@@ -1,10 +1,9 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useModules } from "@/contexts/ModuleContext";
-import { Plus, ChevronLeft, ChevronRight, Trash2, MoreVertical } from "lucide-react";
+import { Plus, ChevronLeft, ChevronRight, Trash2, MoreVertical, Edit3, Save } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +11,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export const Sidebar = () => {
+interface SidebarProps {
+  isEditing: boolean;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
+  onModuleClick: (moduleId: string) => void;
+  activeModuleId: string; // Add activeModuleId to SidebarProps
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ isEditing, setIsEditing, onModuleClick }) => {
   const [collapsed, setCollapsed] = useState(false);
   const { modules, addModule, deleteModule, activeModuleId, setActiveModuleId } = useModules();
 
@@ -30,11 +36,15 @@ export const Sidebar = () => {
 
   const handleModuleClick = (moduleId: string) => {
     setActiveModuleId(moduleId);
+
+    if (onModuleClick) {
+      onModuleClick(moduleId);
+    }
   };
 
   const handleDeleteModule = (id: string) => {
     if (modules.length <= 1) {
-      return; // Prevent deleting the last module
+      return; 
     }
     deleteModule(id);
   };
@@ -47,7 +57,7 @@ export const Sidebar = () => {
     >
       <div className="flex items-center justify-between p-4">
         {!collapsed && (
-          <h1 className="text-lg font-bold text-sidebar-foreground">Course Builder</h1>
+          <img src="/magic-logo.svg" className="w-4/6" alt="magic logo" />
         )}
         <Button
           variant="ghost"
@@ -63,6 +73,20 @@ export const Sidebar = () => {
 
       <div className="p-4">
         <Button
+          onClick={() => setIsEditing(!isEditing)}
+          className="w-full bg-sidebar-primary hover:bg-sidebar-primary/90 text-sidebar-primary-foreground mb-2"
+        >
+          {isEditing ? (
+            <>
+              <Save size={16} className="mr-2" /> Salvar
+            </>
+          ) : (
+            <>
+              <Edit3 size={16} className="mr-2" /> Editar
+            </>
+          )}
+        </Button>
+        <Button
           onClick={handleAddModule}
           className="w-full bg-sidebar-primary hover:bg-sidebar-primary/90 text-sidebar-primary-foreground"
         >
@@ -70,7 +94,7 @@ export const Sidebar = () => {
             <Plus size={20} />
           ) : (
             <>
-              <Plus size={16} className="mr-2" /> Add Module
+              <Plus size={16} className="mr-2" /> Novo Módulo
             </>
           )}
         </Button>
@@ -95,31 +119,33 @@ export const Sidebar = () => {
               ) : (
                 <>
                   <span className="truncate flex-1">{module.title}</span>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className="h-8 w-8 opacity-50 hover:opacity-100"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <MoreVertical size={16} />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem
-                        className="text-destructive focus:text-destructive"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteModule(module.id);
-                        }}
-                        disabled={modules.length <= 1}
-                      >
-                        <Trash2 size={16} className="mr-2" />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  {isEditing && ( // Mostra o menu dropdown apenas no modo de edição
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-8 w-8 opacity-50 hover:opacity-100"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <MoreVertical size={16} />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          className="text-destructive focus:text-destructive"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteModule(module.id);
+                          }}
+                          disabled={modules.length <= 1}
+                        >
+                          <Trash2 size={16} className="mr-2" />
+                          Deletar
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
                 </>
               )}
             </div>
