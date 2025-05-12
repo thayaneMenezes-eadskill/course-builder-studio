@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -99,7 +98,12 @@ export const TiptapEditor = ({ content, onChange, placeholder = "Start writing..
 
   const addYoutubeVideo = () => {
     if (youtubeUrl) {
-      editor.chain().focus().setYoutubeVideo({ src: youtubeUrl }).run();
+      editor.chain().focus().insertContent({
+        type: 'youtube',
+        attrs: {
+          src: youtubeUrl
+        }
+      }).run();
       setYoutubeUrl("");
       setShowYoutubeDialog(false);
     }
