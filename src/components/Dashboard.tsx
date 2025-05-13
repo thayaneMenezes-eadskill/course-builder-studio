@@ -1,3 +1,4 @@
+
 import React, { useCallback, useRef, useState, useEffect } from "react";
 import { Sidebar } from "./Sidebar";
 import ModuleEditor from "./ModuleEditor";
@@ -20,8 +21,43 @@ export const Dashboard = () => {
     if(!isEditing){
       setActiveModuleId("1");
     }
-  }, []);
+  }, [isEditing, setActiveModuleId]);
 
+  // Implementação do Intersection Observer para detectar módulos visíveis
+  useEffect(() => {
+    if (isEditing) return; // Não monitorar durante edição
+
+    const observerOptions = {
+      root: null, // viewport
+      rootMargin: '0px',
+      threshold: 0.3 // 30% do elemento deve estar visível
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const moduleId = entry.target.getAttribute('data-module-id');
+          if (moduleId) {
+            setActiveModuleId(moduleId);
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    // Observar cada módulo
+    modules.forEach(module => {
+      const element = moduleRefs.current[module.id];
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [modules, isEditing, setActiveModuleId]);
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -48,6 +84,7 @@ export const Dashboard = () => {
                     key={module.id}
                     className="ProseMirror mb-4"
                     ref={(el) => (moduleRefs.current[module.id] = el)}
+                    data-module-id={module.id}
                   >
                     <h2 className="text-xl font-bold">{module.title}</h2>
                     <div dangerouslySetInnerHTML={{ __html: module.content }} />

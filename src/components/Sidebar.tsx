@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -15,12 +16,17 @@ interface SidebarProps {
   isEditing: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   onModuleClick: (moduleId: string) => void;
-  activeModuleId: string; // Add activeModuleId to SidebarProps
+  activeModuleId: string;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ isEditing, setIsEditing, onModuleClick }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ 
+  isEditing, 
+  setIsEditing, 
+  onModuleClick,
+  activeModuleId 
+}) => {
   const [collapsed, setCollapsed] = useState(false);
-  const { modules, addModule, deleteModule, activeModuleId, setActiveModuleId } = useModules();
+  const { modules, addModule, deleteModule, setActiveModuleId } = useModules();
 
   const handleAddModule = () => {
     const newOrder = modules.length > 0 
@@ -119,7 +125,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isEditing, setIsEditing, onMod
               ) : (
                 <>
                   <span className="truncate flex-1">{module.title}</span>
-                  {isEditing && ( // Mostra o menu dropdown apenas no modo de edição
+                  {isEditing && (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button 
