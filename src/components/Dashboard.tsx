@@ -10,12 +10,22 @@ export const Dashboard = () => {
   const [isEditing, setIsEditing] = useState(false);
   const moduleRefs = useRef<Record<string, HTMLElement | null>>({});
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const [userClickedModule, setUserClickedModule] = useState<string | null>(null);
 
   const scrollToModule = useCallback((moduleId) => {
     if (moduleRefs.current[moduleId]) {
       moduleRefs.current[moduleId].scrollIntoView({ behavior: "smooth", block: "start" });
+      // Set the clicked module as active
+      setActiveModuleId(moduleId);
+      // Track that the user clicked a module
+      setUserClickedModule(moduleId);
+      
+      // Clear the user click tracking after a delay to return to scroll-based tracking
+      setTimeout(() => {
+        setUserClickedModule(null);
+      }, 2000); // 2 seconds delay
     }
-  }, []);
+  }, [setActiveModuleId]);
 
   const handleSave = useCallback(() => {
     setIsEditing(false);
@@ -37,28 +47,46 @@ export const Dashboard = () => {
 
   // Implementação do Intersection Observer para detectar módulos visíveis
   useEffect(() => {
-    if (isEditing) return; // Não monitorar durante edição
+    if (isEditing || userClickedModule) return; // Don't monitor during editing or when a user clicked a module
+
+    // Track the most visible module
+    let maxVisibleModule = {
+      id: null as string | null,
+      visibleRatio: 0
+    };
 
     const observerOptions = {
       root: null, // viewport
       rootMargin: '0px',
-      threshold: 0.3 // 30% do elemento deve estar visível
+      threshold: Array.from({ length: 11 }, (_, i) => i / 10) // 0, 0.1, 0.2, ..., 1.0
     };
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const moduleId = entry.target.getAttribute('data-module-id');
-          if (moduleId) {
-            setActiveModuleId(moduleId);
+        const moduleId = entry.target.getAttribute('data-module-id');
+        
+        if (moduleId) {
+          const visibleRatio = entry.intersectionRatio;
+          
+          // Update the most visible module if this one has a higher ratio
+          if (visibleRatio > maxVisibleModule.visibleRatio) {
+            maxVisibleModule = {
+              id: moduleId,
+              visibleRatio: visibleRatio
+            };
           }
         }
       });
+
+      // Only update active module if we found one with sufficient visibility
+      if (maxVisibleModule.id && maxVisibleModule.visibleRatio >= 0.5) { // At least 50% visible
+        setActiveModuleId(maxVisibleModule.id);
+      }
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    // Observar cada módulo
+    // Observe each module
     modules.forEach(module => {
       const element = moduleRefs.current[module.id];
       if (element) {
@@ -69,7 +97,7 @@ export const Dashboard = () => {
     return () => {
       observer.disconnect();
     };
-  }, [modules, isEditing, setActiveModuleId]);
+  }, [modules, isEditing, setActiveModuleId, userClickedModule]);
 
   return (
     <div className="flex h-screen overflow-hidden">
