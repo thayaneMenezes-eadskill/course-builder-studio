@@ -4,6 +4,9 @@ import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import Youtube from "@tiptap/extension-youtube";
 import Placeholder from "@tiptap/extension-placeholder";
+import { FlashCardExtension } from "./extensions/FlashCardExtension";
+import { AccordionExtension } from "./extensions/AccordionExtension";
+import { TabsExtension } from "./extensions/TabsExtension";
 
 export const getEditorExtensions = (placeholder: string = "Start writing...") => [
   StarterKit.configure({
@@ -25,5 +28,20 @@ export const getEditorExtensions = (placeholder: string = "Start writing...") =>
   }),
   Placeholder.configure({
     placeholder,
+  }),
+  FlashCardExtension.configure({
+    HTMLAttributes: {
+      class: 'interactive-flashcard',
+    },
+  }),
+  AccordionExtension.configure({
+    HTMLAttributes: {
+      class: 'interactive-accordion',
+    },
+  }),
+  TabsExtension.configure({
+    HTMLAttributes: {
+      class: 'interactive-tabs',
+    },
   }),
 ];

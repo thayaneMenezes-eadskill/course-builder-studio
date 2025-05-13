@@ -13,11 +13,17 @@ import {
   Quote,
   Undo,
   Redo,
+  Card,
+  ChevronsDown,
+  Tabs as TabsIcon,
 } from "lucide-react";
 import { ToolbarButton } from "./ToolbarButton";
 import { LinkDialog } from "./dialogs/LinkDialog";
 import { ImageDialog } from "./dialogs/ImageDialog";
 import { YoutubeDialog } from "./dialogs/YoutubeDialog";
+import { FlashCardDialog } from "./dialogs/FlashCardDialog";
+import { AccordionDialog } from "./dialogs/AccordionDialog";
+import { TabsDialog } from "./dialogs/TabsDialog";
 import { HeadingDropdown } from "./HeadingDropdown";
 
 interface EditorToolbarProps {
@@ -28,6 +34,9 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
   const [showLinkDialog, setShowLinkDialog] = React.useState(false);
   const [showImageDialog, setShowImageDialog] = React.useState(false);
   const [showYoutubeDialog, setShowYoutubeDialog] = React.useState(false);
+  const [showFlashCardDialog, setShowFlashCardDialog] = React.useState(false);
+  const [showAccordionDialog, setShowAccordionDialog] = React.useState(false);
+  const [showTabsDialog, setShowTabsDialog] = React.useState(false);
 
   if (!editor) return null;
   
@@ -109,6 +118,38 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
           <YoutubeIcon size={18} />
         </ToolbarButton>
       </YoutubeDialog>
+
+      <div className="border-r mx-1 h-6"></div>
+
+      <FlashCardDialog 
+        editor={editor}
+        open={showFlashCardDialog}
+        onOpenChange={setShowFlashCardDialog}
+      >
+        <ToolbarButton onClick={() => setShowFlashCardDialog(true)}>
+          <Card size={18} />
+        </ToolbarButton>
+      </FlashCardDialog>
+
+      <AccordionDialog 
+        editor={editor}
+        open={showAccordionDialog}
+        onOpenChange={setShowAccordionDialog}
+      >
+        <ToolbarButton onClick={() => setShowAccordionDialog(true)}>
+          <ChevronsDown size={18} />
+        </ToolbarButton>
+      </AccordionDialog>
+
+      <TabsDialog 
+        editor={editor}
+        open={showTabsDialog}
+        onOpenChange={setShowTabsDialog}
+      >
+        <ToolbarButton onClick={() => setShowTabsDialog(true)}>
+          <TabsIcon size={18} />
+        </ToolbarButton>
+      </TabsDialog>
 
       <div className="border-r mx-1 h-6"></div>
 
