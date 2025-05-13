@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Editor } from "@tiptap/react";
 import {
@@ -13,9 +12,13 @@ import {
   Quote,
   Undo,
   Redo,
-  Card,
+  WalletCards as Card,
   ChevronsDown,
-  Tabs as TabsIcon,
+  IndentIncrease as TabsIcon,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
 } from "lucide-react";
 import { ToolbarButton } from "./ToolbarButton";
 import { LinkDialog } from "./dialogs/LinkDialog";
@@ -25,6 +28,8 @@ import { FlashCardDialog } from "./dialogs/FlashCardDialog";
 import { AccordionDialog } from "./dialogs/AccordionDialog";
 import { TabsDialog } from "./dialogs/TabsDialog";
 import { HeadingDropdown } from "./HeadingDropdown";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 interface EditorToolbarProps {
   editor: Editor | null;
@@ -39,133 +44,210 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
   const [showTabsDialog, setShowTabsDialog] = React.useState(false);
 
   if (!editor) return null;
-  
+
   return (
-    <div className="bg-background border rounded-b-md p-2 flex flex-wrap gap-1 sticky bottom-0 z-10">
-      <ToolbarButton 
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        isActive={editor.isActive("bold")}
-      >
-        <Bold size={18} />
-      </ToolbarButton>
-      
-      <ToolbarButton 
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        isActive={editor.isActive("italic")}
-      >
-        <Italic size={18} />
-      </ToolbarButton>
-      
-      <HeadingDropdown editor={editor} />
-      
-      <ToolbarButton 
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        isActive={editor.isActive("bulletList")}
-      >
-        <List size={18} />
-      </ToolbarButton>
-      
-      <ToolbarButton 
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        isActive={editor.isActive("orderedList")}
-      >
-        <ListOrdered size={18} />
-      </ToolbarButton>
-      
-      <ToolbarButton 
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        isActive={editor.isActive("blockquote")}
-      >
-        <Quote size={18} />
-      </ToolbarButton>
-      
-      <ToolbarButton 
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        isActive={editor.isActive("codeBlock")}
-      >
-        <Code size={18} />
-      </ToolbarButton>
-      
-      <LinkDialog 
-        editor={editor}
-        open={showLinkDialog}
-        onOpenChange={setShowLinkDialog}
-      >
-        <ToolbarButton
-          onClick={() => setShowLinkDialog(true)}
-          isActive={editor.isActive("link")}
+    <TooltipProvider>
+      <div className="bg-background border rounded-b-md p-2 flex flex-wrap gap-1 sticky bottom-0 z-30">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()}>
+              <Bold />
+            </ToolbarButton>
+          </TooltipTrigger>
+          <TooltipContent>Negrito</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()}>
+              <Italic />
+            </ToolbarButton>
+          </TooltipTrigger>
+          <TooltipContent>Itálico</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <HeadingDropdown editor={editor} />
+          </TooltipTrigger>
+          <TooltipContent>Estilos de Título</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <ToolbarButton>
+                  <AlignLeft />
+                </ToolbarButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                <DropdownMenuItem 
+                  className="flex gap-2 items-center" 
+                  onClick={() => editor.chain().focus().setTextAlign('left').run()}
+                >
+                  <AlignLeft size={16} /> <span>Alinhar à Esquerda</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  className="flex gap-2 items-center" 
+                  onClick={() => editor.chain().focus().setTextAlign('center').run()}
+                >
+                  <AlignCenter size={16} /> <span>Centralizar</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  className="flex gap-2 items-center" 
+                  onClick={() => editor.chain().focus().setTextAlign('right').run()}
+                >
+                  <AlignRight size={16} /> <span>Alinhar à Direita</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  className="flex gap-2 items-center" 
+                  onClick={() => editor.chain().focus().setTextAlign('justify').run()}
+                >
+                  <AlignJustify size={16} /> <span>Justificar</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </TooltipTrigger>
+          <TooltipContent>Opções de Alinhamento</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()}>
+              <List />
+            </ToolbarButton>
+          </TooltipTrigger>
+          <TooltipContent>
+            Lista com Marcadores</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()}>
+              <ListOrdered />
+            </ToolbarButton>
+          </TooltipTrigger>
+          <TooltipContent>Lista Ordenada</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ToolbarButton onClick={() => editor.chain().focus().toggleBlockquote().run()}>
+              <Quote />
+            </ToolbarButton>
+          </TooltipTrigger>
+          <TooltipContent>Citação</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ToolbarButton onClick={() => editor.chain().focus().toggleCodeBlock().run()}>
+              <Code />
+            </ToolbarButton>
+          </TooltipTrigger>
+          <TooltipContent>Bloco de Código</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <LinkDialog
+              editor={editor}
+              open={showLinkDialog}
+              onOpenChange={setShowLinkDialog}
+            >
+              <ToolbarButton onClick={() => setShowLinkDialog(true)}>
+                <LinkIcon />
+              </ToolbarButton>
+            </LinkDialog>
+          </TooltipTrigger>
+          <TooltipContent>Adicionar Link</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ImageDialog
+              editor={editor}
+              open={showImageDialog}
+              onOpenChange={setShowImageDialog}
+            >
+              <ToolbarButton onClick={() => setShowImageDialog(true)}>
+                <ImageIcon />
+              </ToolbarButton>
+            </ImageDialog>
+          </TooltipTrigger>
+          <TooltipContent>Imagem</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <YoutubeDialog
+              editor={editor}
+              open={showYoutubeDialog}
+              onOpenChange={setShowYoutubeDialog}
+            >
+              <ToolbarButton onClick={() => setShowYoutubeDialog(true)}>
+                <YoutubeIcon />
+              </ToolbarButton>
+            </YoutubeDialog>
+          </TooltipTrigger>
+          <TooltipContent>Vídeo</TooltipContent>
+        </Tooltip>
+
+        <div className="border-r mx-1 h-6"></div>
+
+        <FlashCardDialog
+          editor={editor}
+          open={showFlashCardDialog}
+          onOpenChange={setShowFlashCardDialog}
         >
-          <LinkIcon size={18} />
-        </ToolbarButton>
-      </LinkDialog>
+          <ToolbarButton onClick={() => setShowFlashCardDialog(true)} disabled>
+            <Card />
+          </ToolbarButton>
+        </FlashCardDialog>
 
-      <ImageDialog 
-        editor={editor}
-        open={showImageDialog}
-        onOpenChange={setShowImageDialog}
-      >
-        <ToolbarButton onClick={() => setShowImageDialog(true)}>
-          <ImageIcon size={18} />
-        </ToolbarButton>
-      </ImageDialog>
-      
-      <YoutubeDialog 
-        editor={editor}
-        open={showYoutubeDialog}
-        onOpenChange={setShowYoutubeDialog}
-      >
-        <ToolbarButton onClick={() => setShowYoutubeDialog(true)}>
-          <YoutubeIcon size={18} />
-        </ToolbarButton>
-      </YoutubeDialog>
+        <AccordionDialog
+          editor={editor}
+          open={showAccordionDialog}
+          onOpenChange={setShowAccordionDialog}
+        >
+          <ToolbarButton onClick={() => setShowAccordionDialog(true)} disabled>
+            <ChevronsDown />
+          </ToolbarButton>
+        </AccordionDialog>
 
-      <div className="border-r mx-1 h-6"></div>
+        <TabsDialog
+          editor={editor}
+          open={showTabsDialog}
+          onOpenChange={setShowTabsDialog}
+        >
+          <ToolbarButton onClick={() => setShowTabsDialog(true)} disabled>
+            <TabsIcon />
+          </ToolbarButton>
+        </TabsDialog>
 
-      <FlashCardDialog 
-        editor={editor}
-        open={showFlashCardDialog}
-        onOpenChange={setShowFlashCardDialog}
-      >
-        <ToolbarButton onClick={() => setShowFlashCardDialog(true)}>
-          <Card size={18} />
-        </ToolbarButton>
-      </FlashCardDialog>
+        <div className="border-r mx-1 h-6"></div>
 
-      <AccordionDialog 
-        editor={editor}
-        open={showAccordionDialog}
-        onOpenChange={setShowAccordionDialog}
-      >
-        <ToolbarButton onClick={() => setShowAccordionDialog(true)}>
-          <ChevronsDown size={18} />
-        </ToolbarButton>
-      </AccordionDialog>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ToolbarButton onClick={() => editor.chain().focus().undo().run()}>
+              <Undo />
+            </ToolbarButton>
+          </TooltipTrigger>
+          <TooltipContent>Desfazer</TooltipContent>
+        </Tooltip>
 
-      <TabsDialog 
-        editor={editor}
-        open={showTabsDialog}
-        onOpenChange={setShowTabsDialog}
-      >
-        <ToolbarButton onClick={() => setShowTabsDialog(true)}>
-          <TabsIcon size={18} />
-        </ToolbarButton>
-      </TabsDialog>
-
-      <div className="border-r mx-1 h-6"></div>
-
-      <ToolbarButton
-        onClick={() => editor.chain().focus().undo().run()}
-        isActive={false}
-      >
-        <Undo size={18} />
-      </ToolbarButton>
-      
-      <ToolbarButton
-        onClick={() => editor.chain().focus().redo().run()}
-        isActive={false}
-      >
-        <Redo size={18} />
-      </ToolbarButton>
-    </div>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ToolbarButton onClick={() => editor.chain().focus().redo().run()}>
+              <Redo />
+            </ToolbarButton>
+          </TooltipTrigger>
+          <TooltipContent>
+            Refazer
+         </TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
   );
 };

@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -22,7 +21,9 @@ export const TiptapEditor = ({ content, onChange, placeholder = "Start writing..
 
   useEffect(() => {
     if (editor && content !== editor.getHTML()) {
-      editor.commands.setContent(content);
+      setTimeout(() => {
+        editor.commands.setContent(content);
+      }, 0);
     }
   }, [content, editor]);
 

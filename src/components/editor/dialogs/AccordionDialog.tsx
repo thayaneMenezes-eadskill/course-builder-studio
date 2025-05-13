@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Minus, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { ToolbarButton } from "../ToolbarButton";
 
 interface AccordionDialogProps {
   editor: Editor;

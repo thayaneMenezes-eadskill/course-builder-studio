@@ -1,9 +1,15 @@
-
 import React, { useState } from 'react';
 import { NodeViewWrapper, NodeViewProps } from '@tiptap/react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Plus, Minus } from 'lucide-react';
+
+// Added sanitization and improved active tab handling for TabsComponent
+const sanitizeHTML = (html) => {
+  const div = document.createElement('div');
+  div.textContent = html;
+  return div.innerHTML;
+};
 
 export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes, editor }) => {
   const { tabs } = node.attrs;
@@ -11,14 +17,16 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
   const isEditable = editor.isEditable;
 
   const handleTitleChange = (index: number, value: string) => {
+    const sanitizedValue = sanitizeHTML(value);
     const newTabs = [...tabs];
-    newTabs[index].title = value;
+    newTabs[index].title = sanitizedValue;
     updateAttributes({ tabs: newTabs });
   };
 
   const handleContentChange = (index: number, value: string) => {
+    const sanitizedValue = sanitizeHTML(value);
     const newTabs = [...tabs];
-    newTabs[index].content = value;
+    newTabs[index].content = sanitizedValue;
     updateAttributes({ tabs: newTabs });
   };
 
@@ -31,7 +39,7 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
   const removeTab = (index: number) => {
     const newTabs = tabs.filter((_, i) => i !== index);
     updateAttributes({ tabs: newTabs });
-    setActiveTab('tab-0');
+    setActiveTab(newTabs.length > 0 ? `tab-${Math.min(index, newTabs.length - 1)}` : 'tab-0');
   };
 
   return (

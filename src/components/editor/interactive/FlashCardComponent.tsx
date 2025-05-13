@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { NodeViewWrapper, NodeViewProps } from '@tiptap/react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -15,12 +14,20 @@ export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
     }
   };
 
+  const sanitizeHTML = (html: string) => {
+    const div = document.createElement('div');
+    div.textContent = html;
+    return div.innerHTML;
+  };
+
   const handleFrontChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    updateAttributes({ front: e.target.value });
+    const sanitizedValue = sanitizeHTML(e.target.value);
+    updateAttributes({ front: sanitizedValue });
   };
 
   const handleBackChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    updateAttributes({ back: e.target.value });
+    const sanitizedValue = sanitizeHTML(e.target.value);
+    updateAttributes({ back: sanitizedValue });
   };
 
   return (

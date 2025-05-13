@@ -1,9 +1,9 @@
-
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import Youtube from "@tiptap/extension-youtube";
 import Placeholder from "@tiptap/extension-placeholder";
+import TextAlign from "@tiptap/extension-text-align";
 import { FlashCardExtension } from "./extensions/FlashCardExtension";
 import { AccordionExtension } from "./extensions/AccordionExtension";
 import { TabsExtension } from "./extensions/TabsExtension";
@@ -28,6 +28,9 @@ export const getEditorExtensions = (placeholder: string = "Start writing...") =>
   }),
   Placeholder.configure({
     placeholder,
+  }),
+  TextAlign.configure({
+    types: ["heading", "paragraph"],
   }),
   FlashCardExtension.configure({
     HTMLAttributes: {
