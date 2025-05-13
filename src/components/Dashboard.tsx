@@ -9,6 +9,7 @@ export const Dashboard = () => {
   const { modules, activeModuleId, setActiveModuleId } = useModules();
   const [isEditing, setIsEditing] = useState(false);
   const moduleRefs = useRef<Record<string, HTMLElement | null>>({});
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const scrollToModule = useCallback((moduleId) => {
     if (moduleRefs.current[moduleId]) {
@@ -18,10 +19,21 @@ export const Dashboard = () => {
 
   const handleSave = useCallback(() => {
     setIsEditing(false);
-    if(!isEditing){
-      setActiveModuleId("1");
+    
+    // Reset scroll position to top
+    if (scrollAreaRef.current) {
+      const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollContainer) {
+        scrollContainer.scrollTop = 0;
+      }
     }
-  }, [isEditing, setActiveModuleId]);
+    
+    // Set the first module as active
+    if (modules.length > 0) {
+      const sortedModules = [...modules].sort((a, b) => a.order - b.order);
+      setActiveModuleId(sortedModules[0].id);
+    }
+  }, [modules, setActiveModuleId]);
 
   // Implementação do Intersection Observer para detectar módulos visíveis
   useEffect(() => {
@@ -68,7 +80,7 @@ export const Dashboard = () => {
         activeModuleId={activeModuleId}
       />
       <div className="flex-1 overflow-hidden relative">
-        <ScrollArea className="h-full px-4 sm:px-8 py-6 scroll-area">
+        <ScrollArea ref={scrollAreaRef} className="h-full px-4 sm:px-8 py-6 scroll-area">
           <div className="max-w-4xl mx-auto pb-24">
             {activeModuleId ? (
               isEditing ? (
