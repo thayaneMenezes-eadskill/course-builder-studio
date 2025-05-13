@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -81,14 +82,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onClick={() => setIsEditing(!isEditing)}
           className="w-full bg-sidebar-primary hover:bg-sidebar-primary/90 text-sidebar-primary-foreground mb-2"
         >
-          {isEditing ? (
-            <>
-              <Save size={16} className="mr-2" /> Salvar
-            </>
+          {collapsed ? (
+            isEditing ? <Save size={20} /> : <Edit3 size={20} />
           ) : (
-            <>
-              <Edit3 size={16} className="mr-2" /> Editar
-            </>
+            isEditing ? (
+              <>
+                <Save size={16} className="mr-2" /> Salvar
+              </>
+            ) : (
+              <>
+                <Edit3 size={16} className="mr-2" /> Editar
+              </>
+            )
           )}
         </Button>
         <Button
