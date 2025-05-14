@@ -17,6 +17,7 @@ const ModuleViewer = ({ title, content }: ModuleViewerProps) => {
           content={content}
           onChange={() => {}} // No-op since this is view-only
           editable={false}
+          placeholder=""
         />
       </CardContent>
     </Card>
