@@ -5,7 +5,6 @@ import { ListOrdered, ChevronDown, Check } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
@@ -27,7 +26,7 @@ export const ListsDropdown = ({ editor }: ListsDropdownProps) => {
         <div>
           <ToolbarButton
             title="Lists"
-            active={isAnyListActive}
+            isActive={isAnyListActive}
             icon={
               <div className="flex items-center">
                 <ListOrdered size={16} />
@@ -60,7 +59,7 @@ export const ListsDropdown = ({ editor }: ListsDropdownProps) => {
 
         <DropdownMenuCheckboxItem
           checked={isTaskListActive}
-          onSelect={() => editor.chain().focus().toggleTaskList().run()}
+          onSelect={() => editor.commands.toggleTaskList()}
         >
           <div className="flex items-center">
             {isTaskListActive && <Check className="w-4 h-4 mr-2" />}
