@@ -15,12 +15,10 @@ export const HeadingDropdownButton = ({ editor }: HeadingDropdownButtonProps) =>
       <TooltipTrigger asChild>
         <div className="flex items-center">
           <HeadingDropdown editor={editor} />
-          <span className="text-gray-400 -ml-1">
-            <ChevronDown size={14} />
-          </span>
+          
         </div>
       </TooltipTrigger>
-      <TooltipContent>Estilos de Título</TooltipContent>
+      <TooltipContent>Títulos</TooltipContent>
     </Tooltip>
   );
 };

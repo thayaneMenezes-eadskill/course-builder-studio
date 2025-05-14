@@ -19,7 +19,7 @@ export const AlignmentDropdown = ({ editor }: AlignmentDropdownProps) => {
             <DropdownMenuTrigger asChild>
               <ToolbarButton isActive={editor.isActive('textAlign')}>
                 <AlignLeft />
-                <span className="text-gray-400 ml-0.5">
+                <span className="text-gray-400 -ml-1">
                   <ChevronDown size={14} />
                 </span>
               </ToolbarButton>
@@ -53,7 +53,7 @@ export const AlignmentDropdown = ({ editor }: AlignmentDropdownProps) => {
           </DropdownMenu>
         </div>
       </TooltipTrigger>
-      <TooltipContent>Opções de Alinhamento</TooltipContent>
+      <TooltipContent>Alinhamento</TooltipContent>
     </Tooltip>
   );
 };

@@ -30,7 +30,7 @@ export const ListsDropdown = ({ editor }: ListsDropdownProps) => {
             icon={
               <div className="flex items-center">
                 <ListOrdered size={16} />
-                <ChevronDown size={14} className="ml-1" />
+                <span className="text-gray-400 "> <ChevronDown size={14} className="ml-1" /></span>
               </div>
             }
           />
@@ -38,32 +38,29 @@ export const ListsDropdown = ({ editor }: ListsDropdownProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center">
         <DropdownMenuCheckboxItem
-          checked={isBulletListActive}
           onSelect={() => editor.chain().focus().toggleBulletList().run()}
         >
           <div className="flex items-center">
-            {isBulletListActive && <Check className="w-4 h-4 mr-2" />}
-            <span className={isBulletListActive ? "ml-0" : "ml-6"}>Bullet List</span>
+            {isBulletListActive && <Check className="w-3 h-3" />}
+            <span>Bullet List</span>
           </div>
         </DropdownMenuCheckboxItem>
 
         <DropdownMenuCheckboxItem
-          checked={isOrderedListActive}
           onSelect={() => editor.chain().focus().toggleOrderedList().run()}
         >
           <div className="flex items-center">
-            {isOrderedListActive && <Check className="w-4 h-4 mr-2" />}
-            <span className={isOrderedListActive ? "ml-0" : "ml-6"}>Ordered List</span>
+            {isOrderedListActive && <Check className="w-3 h-3" />}
+            <span>Ordered List</span>
           </div>
         </DropdownMenuCheckboxItem>
 
         <DropdownMenuCheckboxItem
-          checked={isTaskListActive}
           onSelect={() => editor.commands.toggleTaskList()}
         >
           <div className="flex items-center">
-            {isTaskListActive && <Check className="w-4 h-4 mr-2" />}
-            <span className={isTaskListActive ? "ml-0" : "ml-6"}>Task List</span>
+            {isTaskListActive && <Check className="w-3 h-3" />}
+            <span>Task List</span>
           </div>
         </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
