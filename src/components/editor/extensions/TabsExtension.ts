@@ -31,6 +31,28 @@ export const TabsExtension = Node.create<TabsOptions>({
           { title: 'Tab 1', content: 'Content 1' },
           { title: 'Tab 2', content: 'Content 2' },
         ],
+        parseHTML: (element) => {
+          const tabs = element.getAttribute('data-tabs');
+          try {
+            return tabs ? JSON.parse(tabs) : [
+              { title: 'Tab 1', content: 'Content 1' },
+              { title: 'Tab 2', content: 'Content 2' },
+            ];
+          } catch {
+            return [
+              { title: 'Tab 1', content: 'Content 1' },
+              { title: 'Tab 2', content: 'Content 2' },
+            ];
+          }
+        },
+        renderHTML: (attributes) => {
+          return {
+            'data-tabs': JSON.stringify(attributes.tabs || [
+              { title: 'Tab 1', content: 'Content 1' },
+              { title: 'Tab 2', content: 'Content 2' },
+            ]),
+          };
+        },
       },
     };
   },

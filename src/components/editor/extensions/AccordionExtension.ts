@@ -24,7 +24,6 @@ export const AccordionExtension = Node.create<AccordionOptions>({
   
   atom: true,
 
-  // Ensure items is always initialized as an array and validated
   addAttributes() {
     return {
       items: {
@@ -34,14 +33,14 @@ export const AccordionExtension = Node.create<AccordionOptions>({
         parseHTML: (element) => {
           const items = element.getAttribute('data-items');
           try {
-            return items ? JSON.parse(items) : [];
+            return items ? JSON.parse(items) : [{ title: 'Item 1', content: 'Content 1' }];
           } catch {
-            return [];
+            return [{ title: 'Item 1', content: 'Content 1' }];
           }
         },
         renderHTML: (attributes) => {
           return {
-            'data-items': JSON.stringify(attributes.items || []),
+            'data-items': JSON.stringify(attributes.items || [{ title: 'Item 1', content: 'Content 1' }]),
           };
         },
       },

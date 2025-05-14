@@ -5,28 +5,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Plus, Minus } from 'lucide-react';
 
-const sanitizeHTML = (html: string) => {
-  const div = document.createElement('div');
-  div.textContent = html;
-  return div.innerHTML;
-};
-
 export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes, editor }) => {
   const { tabs } = node.attrs;
   const [activeTab, setActiveTab] = useState('tab-0');
   const isEditable = editor.isEditable;
 
   const handleTitleChange = (index: number, value: string) => {
-    const sanitizedValue = sanitizeHTML(value);
     const newTabs = [...tabs];
-    newTabs[index].title = sanitizedValue;
+    newTabs[index].title = value;
     updateAttributes({ tabs: newTabs });
   };
 
   const handleContentChange = (index: number, value: string) => {
-    const sanitizedValue = sanitizeHTML(value);
     const newTabs = [...tabs];
-    newTabs[index].content = sanitizedValue;
+    newTabs[index].content = value;
     updateAttributes({ tabs: newTabs });
   };
 
@@ -37,9 +29,17 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
   };
 
   const removeTab = (index: number) => {
-    const newTabs = tabs.filter((_, i) => i !== index);
-    updateAttributes({ tabs: newTabs });
-    setActiveTab(newTabs.length > 0 ? `tab-${Math.min(index, newTabs.length - 1)}` : 'tab-0');
+    if (tabs.length > 1) {
+      const newTabs = tabs.filter((_, i) => i !== index);
+      updateAttributes({ tabs: newTabs });
+      setActiveTab(newTabs.length > 0 ? `tab-${Math.min(index, newTabs.length - 1)}` : 'tab-0');
+    }
+  };
+
+  const stopPropagation = (e: React.MouseEvent) => {
+    if (isEditable) {
+      e.stopPropagation();
+    }
   };
 
   return (
@@ -69,6 +69,7 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
                         removeTab(index);
                       }}
                       className="ml-1 h-5 w-5"
+                      disabled={tabs.length <= 1}
                     >
                       <Minus size={12} />
                     </Button>
@@ -102,6 +103,7 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
                 value={tab.content}
                 onChange={(e) => handleContentChange(index, e.target.value)}
                 placeholder="Conteúdo da tab"
+                onClick={stopPropagation}
               />
             ) : (
               <div dangerouslySetInnerHTML={{ __html: tab.content }} />

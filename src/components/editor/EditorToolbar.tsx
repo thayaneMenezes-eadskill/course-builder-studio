@@ -19,6 +19,9 @@ import {
   AlignCenter,
   AlignRight,
   AlignJustify,
+  Strikethrough,
+  Underline,
+  Highlighter,
 } from "lucide-react";
 import { ToolbarButton } from "./ToolbarButton";
 import { LinkDialog } from "./dialogs/LinkDialog";
@@ -50,7 +53,10 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
       <div className="bg-background border rounded-b-md p-2 flex flex-wrap gap-1 sticky bottom-0 z-30">
         <Tooltip>
           <TooltipTrigger asChild>
-            <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()}>
+            <ToolbarButton 
+              onClick={() => editor.chain().focus().toggleBold().run()}
+              isActive={editor.isActive('bold')}
+            >
               <Bold />
             </ToolbarButton>
           </TooltipTrigger>
@@ -59,11 +65,50 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()}>
+            <ToolbarButton 
+              onClick={() => editor.chain().focus().toggleItalic().run()}
+              isActive={editor.isActive('italic')}
+            >
               <Italic />
             </ToolbarButton>
           </TooltipTrigger>
           <TooltipContent>Itálico</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ToolbarButton 
+              onClick={() => editor.chain().focus().toggleUnderline().run()}
+              isActive={editor.isActive('underline')}
+            >
+              <Underline />
+            </ToolbarButton>
+          </TooltipTrigger>
+          <TooltipContent>Sublinhado</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ToolbarButton 
+              onClick={() => editor.chain().focus().toggleStrike().run()}
+              isActive={editor.isActive('strike')}
+            >
+              <Strikethrough />
+            </ToolbarButton>
+          </TooltipTrigger>
+          <TooltipContent>Tachado</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ToolbarButton 
+              onClick={() => editor.chain().focus().toggleHighlight().run()}
+              isActive={editor.isActive('highlight')}
+            >
+              <Highlighter />
+            </ToolbarButton>
+          </TooltipTrigger>
+          <TooltipContent>Destacar</TooltipContent>
         </Tooltip>
 
         <Tooltip>
@@ -114,7 +159,10 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()}>
+            <ToolbarButton 
+              onClick={() => editor.chain().focus().toggleBulletList().run()}
+              isActive={editor.isActive('bulletList')}
+            >
               <List />
             </ToolbarButton>
           </TooltipTrigger>
@@ -124,7 +172,10 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()}>
+            <ToolbarButton 
+              onClick={() => editor.chain().focus().toggleOrderedList().run()}
+              isActive={editor.isActive('orderedList')}
+            >
               <ListOrdered />
             </ToolbarButton>
           </TooltipTrigger>
@@ -133,7 +184,10 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <ToolbarButton onClick={() => editor.chain().focus().toggleBlockquote().run()}>
+            <ToolbarButton 
+              onClick={() => editor.chain().focus().toggleBlockquote().run()}
+              isActive={editor.isActive('blockquote')}
+            >
               <Quote />
             </ToolbarButton>
           </TooltipTrigger>
@@ -142,7 +196,10 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <ToolbarButton onClick={() => editor.chain().focus().toggleCodeBlock().run()}>
+            <ToolbarButton 
+              onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+              isActive={editor.isActive('codeBlock')}
+            >
               <Code />
             </ToolbarButton>
           </TooltipTrigger>
@@ -245,7 +302,10 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <ToolbarButton onClick={() => editor.chain().focus().undo().run()}>
+            <ToolbarButton 
+              onClick={() => editor.chain().focus().undo().run()}
+              isActive={editor.isActive('undo')}
+            >
               <Undo />
             </ToolbarButton>
           </TooltipTrigger>
@@ -254,7 +314,10 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <ToolbarButton onClick={() => editor.chain().focus().redo().run()}>
+            <ToolbarButton 
+              onClick={() => editor.chain().focus().redo().run()}
+              isActive={editor.isActive('redo')}
+            >
               <Redo />
             </ToolbarButton>
           </TooltipTrigger>

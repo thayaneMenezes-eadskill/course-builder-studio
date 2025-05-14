@@ -10,33 +10,33 @@ export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
   const isEditable = editor.isEditable;
 
   const handleFlip = () => {
-    if (!isEditable) {
-      setFlipped(!flipped);
-    }
-  };
-
-  const sanitizeHTML = (html: string) => {
-    const div = document.createElement('div');
-    div.textContent = html;
-    return div.innerHTML;
+    setFlipped(!flipped);
   };
 
   const handleFrontChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const sanitizedValue = sanitizeHTML(e.target.value);
-    updateAttributes({ front: sanitizedValue });
+    updateAttributes({ front: e.target.value });
   };
 
   const handleBackChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const sanitizedValue = sanitizeHTML(e.target.value);
-    updateAttributes({ back: sanitizedValue });
+    updateAttributes({ back: e.target.value });
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (!isEditable) {
+      handleFlip();
+    }
+  };
+
+  const handleEditorInputClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
   };
 
   return (
     <NodeViewWrapper className="my-4">
       <div className="relative min-h-[200px]">
         <Card 
-          className={`transition-all duration-300 ${flipped ? 'opacity-0 absolute inset-0' : 'opacity-100'}`}
-          onClick={handleFlip}
+          className={`transition-all duration-300 ${flipped ? 'opacity-0 absolute inset-0 pointer-events-none' : 'opacity-100'}`}
+          onClick={handleClick}
         >
           <CardContent className="p-6 flex flex-col items-center">
             {isEditable ? (
@@ -45,7 +45,7 @@ export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
                 value={front}
                 onChange={handleFrontChange}
                 placeholder="Digite o conteúdo frontal do flashcard"
-                onClick={(e) => e.stopPropagation()}
+                onClick={handleEditorInputClick}
               />
             ) : (
               <div className="text-center">
@@ -57,8 +57,8 @@ export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
         </Card>
         
         <Card 
-          className={`transition-all duration-300 ${!flipped ? 'opacity-0 absolute inset-0' : 'opacity-100'}`}
-          onClick={handleFlip}
+          className={`transition-all duration-300 ${!flipped ? 'opacity-0 absolute inset-0 pointer-events-none' : 'opacity-100'}`}
+          onClick={handleClick}
         >
           <CardContent className="p-6 flex flex-col items-center">
             {isEditable ? (
@@ -67,7 +67,7 @@ export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
                 value={back}
                 onChange={handleBackChange}
                 placeholder="Digite o conteúdo do verso do flashcard"
-                onClick={(e) => e.stopPropagation()}
+                onClick={handleEditorInputClick}
               />
             ) : (
               <div className="text-center">
