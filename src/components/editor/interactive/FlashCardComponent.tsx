@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { NodeViewWrapper, NodeViewProps } from '@tiptap/react';
 import { Card, CardContent } from '@/components/ui/card';

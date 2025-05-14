@@ -39,7 +39,7 @@ export const AccordionComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
   return (
     <NodeViewWrapper className="my-4">
       <Accordion type="single" collapsible className="w-full">
-        {items.map((item, index) => (
+        {items && items.map((item, index) => (
           <AccordionItem key={index} value={`item-${index}`}>
             {isEditable ? (
               <div className="flex items-center">

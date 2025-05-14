@@ -1,11 +1,11 @@
+
 import React, { useState } from 'react';
 import { NodeViewWrapper, NodeViewProps } from '@tiptap/react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Plus, Minus } from 'lucide-react';
 
-// Added sanitization and improved active tab handling for TabsComponent
-const sanitizeHTML = (html) => {
+const sanitizeHTML = (html: string) => {
   const div = document.createElement('div');
   div.textContent = html;
   return div.innerHTML;
@@ -46,8 +46,8 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
     <NodeViewWrapper className="my-4">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="flex items-center">
-          <TabsList>
-            {tabs.map((tab, index) => (
+          <TabsList className="flex-1">
+            {tabs && tabs.map((tab, index) => (
               <div key={index} className="flex items-center">
                 {isEditable ? (
                   <div className="flex items-center px-3 py-1.5">
@@ -94,7 +94,7 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
           )}
         </div>
         
-        {tabs.map((tab, index) => (
+        {tabs && tabs.map((tab, index) => (
           <TabsContent key={index} value={`tab-${index}`}>
             {isEditable ? (
               <textarea

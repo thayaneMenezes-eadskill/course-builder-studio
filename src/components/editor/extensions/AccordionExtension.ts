@@ -1,3 +1,4 @@
+
 import { Node, mergeAttributes } from '@tiptap/core';
 import { ReactNodeViewRenderer } from '@tiptap/react';
 import { AccordionComponent } from '../interactive/AccordionComponent';
@@ -27,7 +28,9 @@ export const AccordionExtension = Node.create<AccordionOptions>({
   addAttributes() {
     return {
       items: {
-        default: [],
+        default: [
+          { title: 'Item 1', content: 'Content 1' }
+        ],
         parseHTML: (element) => {
           const items = element.getAttribute('data-items');
           try {

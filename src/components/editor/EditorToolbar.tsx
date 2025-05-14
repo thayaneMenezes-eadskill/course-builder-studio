@@ -12,9 +12,9 @@ import {
   Quote,
   Undo,
   Redo,
-  WalletCards as Card,
+  CreditCard,
   ChevronsDown,
-  IndentIncrease as TabsIcon,
+  PanelTopClose,
   AlignLeft,
   AlignCenter,
   AlignRight,
@@ -196,35 +196,50 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
 
         <div className="border-r mx-1 h-6"></div>
 
-        <FlashCardDialog
-          editor={editor}
-          open={showFlashCardDialog}
-          onOpenChange={setShowFlashCardDialog}
-        >
-          <ToolbarButton onClick={() => setShowFlashCardDialog(true)} disabled>
-            <Card />
-          </ToolbarButton>
-        </FlashCardDialog>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <FlashCardDialog
+              editor={editor}
+              open={showFlashCardDialog}
+              onOpenChange={setShowFlashCardDialog}
+            >
+              <ToolbarButton onClick={() => setShowFlashCardDialog(true)}>
+                <CreditCard />
+              </ToolbarButton>
+            </FlashCardDialog>
+          </TooltipTrigger>
+          <TooltipContent>Flashcard</TooltipContent>
+        </Tooltip>
 
-        <AccordionDialog
-          editor={editor}
-          open={showAccordionDialog}
-          onOpenChange={setShowAccordionDialog}
-        >
-          <ToolbarButton onClick={() => setShowAccordionDialog(true)} disabled>
-            <ChevronsDown />
-          </ToolbarButton>
-        </AccordionDialog>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <AccordionDialog
+              editor={editor}
+              open={showAccordionDialog}
+              onOpenChange={setShowAccordionDialog}
+            >
+              <ToolbarButton onClick={() => setShowAccordionDialog(true)}>
+                <ChevronsDown />
+              </ToolbarButton>
+            </AccordionDialog>
+          </TooltipTrigger>
+          <TooltipContent>Acordeão</TooltipContent>
+        </Tooltip>
 
-        <TabsDialog
-          editor={editor}
-          open={showTabsDialog}
-          onOpenChange={setShowTabsDialog}
-        >
-          <ToolbarButton onClick={() => setShowTabsDialog(true)} disabled>
-            <TabsIcon />
-          </ToolbarButton>
-        </TabsDialog>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <TabsDialog
+              editor={editor}
+              open={showTabsDialog}
+              onOpenChange={setShowTabsDialog}
+            >
+              <ToolbarButton onClick={() => setShowTabsDialog(true)}>
+                <PanelTopClose />
+              </ToolbarButton>
+            </TabsDialog>
+          </TooltipTrigger>
+          <TooltipContent>Abas</TooltipContent>
+        </Tooltip>
 
         <div className="border-r mx-1 h-6"></div>
 
