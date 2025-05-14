@@ -42,14 +42,14 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
     }
   };
 
-  return (
-    <NodeViewWrapper className="my-4">
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <div className="flex items-center">
-          <TabsList className="flex-1">
-            {tabs && tabs.map((tab, index) => (
-              <div key={index} className="flex items-center">
-                {isEditable ? (
+  if (isEditable) {
+    return (
+      <NodeViewWrapper className="my-4">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <div className="flex items-center">
+            <TabsList className="flex-1">
+              {tabs && tabs.map((tab, index) => (
+                <div key={index} className="flex items-center">
                   <div className="flex items-center px-3 py-1.5">
                     <input
                       type="text"
@@ -74,16 +74,10 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
                       <Minus size={12} />
                     </Button>
                   </div>
-                ) : (
-                  <TabsTrigger value={`tab-${index}`}>
-                    {tab.title}
-                  </TabsTrigger>
-                )}
-              </div>
-            ))}
-          </TabsList>
-          
-          {isEditable && (
+                </div>
+              ))}
+            </TabsList>
+            
             <Button 
               variant="ghost" 
               size="icon" 
@@ -92,12 +86,10 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
             >
               <Plus size={16} />
             </Button>
-          )}
-        </div>
-        
-        {tabs && tabs.map((tab, index) => (
-          <TabsContent key={index} value={`tab-${index}`}>
-            {isEditable ? (
+          </div>
+          
+          {tabs && tabs.map((tab, index) => (
+            <TabsContent key={index} value={`tab-${index}`}>
               <textarea
                 className="w-full p-2 bg-transparent border rounded resize-none min-h-[100px]"
                 value={tab.content}
@@ -105,9 +97,27 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
                 placeholder="Conteúdo da tab"
                 onClick={stopPropagation}
               />
-            ) : (
-              <div dangerouslySetInnerHTML={{ __html: tab.content }} />
-            )}
+            </TabsContent>
+          ))}
+        </Tabs>
+      </NodeViewWrapper>
+    );
+  }
+
+  return (
+    <NodeViewWrapper className="my-4">
+      <Tabs defaultValue="tab-0" className="w-full">
+        <TabsList>
+          {tabs && tabs.map((tab, index) => (
+            <TabsTrigger key={index} value={`tab-${index}`}>
+              {tab.title}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        
+        {tabs && tabs.map((tab, index) => (
+          <TabsContent key={index} value={`tab-${index}`}>
+            <div dangerouslySetInnerHTML={{ __html: tab.content }} />
           </TabsContent>
         ))}
       </Tabs>

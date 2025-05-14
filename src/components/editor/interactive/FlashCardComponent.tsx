@@ -22,21 +22,20 @@ export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    if (!isEditable) {
-      handleFlip();
-    }
+    handleFlip();
   };
 
   const handleEditorInputClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    if (isEditable) {
+      e.stopPropagation();
+    }
   };
 
   return (
     <NodeViewWrapper className="my-4">
-      <div className="relative min-h-[200px]">
+      <div className="relative min-h-[200px]" onClick={isEditable ? undefined : handleClick}>
         <Card 
           className={`transition-all duration-300 ${flipped ? 'opacity-0 absolute inset-0 pointer-events-none' : 'opacity-100'}`}
-          onClick={handleClick}
         >
           <CardContent className="p-6 flex flex-col items-center">
             {isEditable ? (
@@ -58,7 +57,6 @@ export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
         
         <Card 
           className={`transition-all duration-300 ${!flipped ? 'opacity-0 absolute inset-0 pointer-events-none' : 'opacity-100'}`}
-          onClick={handleClick}
         >
           <CardContent className="p-6 flex flex-col items-center">
             {isEditable ? (

@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Editor } from "@tiptap/react";
 import {
@@ -22,6 +23,9 @@ import {
   Strikethrough,
   Underline,
   Highlighter,
+  ChevronDown,
+  ListTodo,
+  Heading1,
 } from "lucide-react";
 import { ToolbarButton } from "./ToolbarButton";
 import { LinkDialog } from "./dialogs/LinkDialog";
@@ -113,73 +117,96 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <HeadingDropdown editor={editor} />
+            <div className="flex items-center">
+              <HeadingDropdown editor={editor} />
+              <span className="text-gray-400 -ml-1">
+                <ChevronDown size={14} />
+              </span>
+            </div>
           </TooltipTrigger>
           <TooltipContent>Estilos de Título</TooltipContent>
         </Tooltip>
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <ToolbarButton>
-                  <AlignLeft />
-                </ToolbarButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                <DropdownMenuItem 
-                  className="flex gap-2 items-center" 
-                  onClick={() => editor.chain().focus().setTextAlign('left').run()}
-                >
-                  <AlignLeft size={16} /> <span>Alinhar à Esquerda</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  className="flex gap-2 items-center" 
-                  onClick={() => editor.chain().focus().setTextAlign('center').run()}
-                >
-                  <AlignCenter size={16} /> <span>Centralizar</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  className="flex gap-2 items-center" 
-                  onClick={() => editor.chain().focus().setTextAlign('right').run()}
-                >
-                  <AlignRight size={16} /> <span>Alinhar à Direita</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  className="flex gap-2 items-center" 
-                  onClick={() => editor.chain().focus().setTextAlign('justify').run()}
-                >
-                  <AlignJustify size={16} /> <span>Justificar</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div className="flex items-center">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <ToolbarButton isActive={editor.isActive('textAlign')}>
+                    <AlignLeft />
+                    <span className="text-gray-400 ml-0.5">
+                      <ChevronDown size={14} />
+                    </span>
+                  </ToolbarButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuItem 
+                    className="flex gap-2 items-center" 
+                    onClick={() => editor.chain().focus().setTextAlign('left').run()}
+                  >
+                    <AlignLeft size={16} /> <span>Alinhar à Esquerda</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className="flex gap-2 items-center" 
+                    onClick={() => editor.chain().focus().setTextAlign('center').run()}
+                  >
+                    <AlignCenter size={16} /> <span>Centralizar</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className="flex gap-2 items-center" 
+                    onClick={() => editor.chain().focus().setTextAlign('right').run()}
+                  >
+                    <AlignRight size={16} /> <span>Alinhar à Direita</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className="flex gap-2 items-center" 
+                    onClick={() => editor.chain().focus().setTextAlign('justify').run()}
+                  >
+                    <AlignJustify size={16} /> <span>Justificar</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </TooltipTrigger>
           <TooltipContent>Opções de Alinhamento</TooltipContent>
         </Tooltip>
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <ToolbarButton 
-              onClick={() => editor.chain().focus().toggleBulletList().run()}
-              isActive={editor.isActive('bulletList')}
-            >
-              <List />
-            </ToolbarButton>
+            <div className="flex items-center">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <ToolbarButton isActive={editor.isActive('bulletList') || editor.isActive('orderedList') || editor.isActive('taskList')}>
+                    <ListOrdered />
+                    <span className="text-gray-400 ml-0.5">
+                      <ChevronDown size={14} />
+                    </span>
+                  </ToolbarButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuItem 
+                    className="flex gap-2 items-center" 
+                    onClick={() => editor.chain().focus().toggleBulletList().run()}
+                  >
+                    <List size={16} /> <span>Lista com Marcadores</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className="flex gap-2 items-center" 
+                    onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                  >
+                    <ListOrdered size={16} /> <span>Lista Ordenada</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className="flex gap-2 items-center" 
+                    onClick={() => editor.chain().focus().toggleTaskList().run()}
+                  >
+                    <ListTodo size={16} /> <span>Lista de Tarefas</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </TooltipTrigger>
-          <TooltipContent>
-            Lista com Marcadores</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <ToolbarButton 
-              onClick={() => editor.chain().focus().toggleOrderedList().run()}
-              isActive={editor.isActive('orderedList')}
-            >
-              <ListOrdered />
-            </ToolbarButton>
-          </TooltipTrigger>
-          <TooltipContent>Lista Ordenada</TooltipContent>
+          <TooltipContent>Opções de Lista</TooltipContent>
         </Tooltip>
 
         <Tooltip>

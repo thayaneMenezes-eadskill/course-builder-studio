@@ -44,12 +44,12 @@ export const AccordionComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
     }
   };
 
-  return (
-    <NodeViewWrapper className="my-4">
-      <Accordion type="single" collapsible className="w-full">
-        {items && items.map((item, index) => (
-          <AccordionItem key={index} value={`item-${index}`}>
-            {isEditable ? (
+  if (isEditable) {
+    return (
+      <NodeViewWrapper className="my-4">
+        <Accordion type="single" collapsible className="w-full">
+          {items && items.map((item, index) => (
+            <AccordionItem key={index} value={`item-${index}`}>
               <div className="flex items-center py-4">
                 <input
                   type="text"
@@ -72,12 +72,7 @@ export const AccordionComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
                   <Minus size={16} />
                 </Button>
               </div>
-            ) : (
-              <AccordionTrigger>{item.title}</AccordionTrigger>
-            )}
-            
-            <AccordionContent>
-              {isEditable ? (
+              <div className="px-4 pb-4">
                 <textarea
                   className="w-full p-2 bg-transparent border rounded resize-none min-h-[100px]"
                   value={item.content}
@@ -85,15 +80,11 @@ export const AccordionComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
                   placeholder="Conteúdo do item"
                   onClick={stopPropagation}
                 />
-              ) : (
-                <div dangerouslySetInnerHTML={{ __html: item.content }} />
-              )}
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-      
-      {isEditable && (
+              </div>
+            </AccordionItem>
+          ))}
+        </Accordion>
+        
         <Button 
           variant="outline" 
           onClick={addItem}
@@ -101,7 +92,22 @@ export const AccordionComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
         >
           <Plus size={16} className="mr-2" /> Adicionar Item
         </Button>
-      )}
+      </NodeViewWrapper>
+    );
+  }
+
+  return (
+    <NodeViewWrapper className="my-4">
+      <Accordion type="single" collapsible className="w-full">
+        {items && items.map((item, index) => (
+          <AccordionItem key={index} value={`item-${index}`}>
+            <AccordionTrigger>{item.title}</AccordionTrigger>
+            <AccordionContent>
+              <div dangerouslySetInnerHTML={{ __html: item.content }} />
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
     </NodeViewWrapper>
   );
 };
