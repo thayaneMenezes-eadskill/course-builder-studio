@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { TiptapEditor } from "./TiptapEditor";
 import { Card, CardContent } from "@/components/ui/card";
 

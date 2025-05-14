@@ -22,6 +22,7 @@ export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
   };
 
   const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     handleFlip();
   };
 
@@ -33,7 +34,10 @@ export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
 
   return (
     <NodeViewWrapper className="my-4">
-      <div className="relative min-h-[200px]" onClick={isEditable ? undefined : handleClick}>
+      <div 
+        className="relative min-h-[200px] cursor-pointer" 
+        onClick={handleClick}
+      >
         <Card 
           className={`transition-all duration-300 ${flipped ? 'opacity-0 absolute inset-0 pointer-events-none' : 'opacity-100'}`}
         >
