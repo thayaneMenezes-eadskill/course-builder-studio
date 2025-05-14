@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Editor } from "@tiptap/react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -15,7 +14,8 @@ interface AccordionDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export const AccordionDialog = ({ editor, children, open, onOpenChange }: AccordionDialogProps) => {
+export const AccordionDialog = React.forwardRef((props: AccordionDialogProps, ref) => {
+  const { editor, children, open, onOpenChange } = props;
   const [items, setItems] = useState([{ title: "Item 1", content: "" }]);
 
   const addItem = () => {
@@ -106,4 +106,7 @@ export const AccordionDialog = ({ editor, children, open, onOpenChange }: Accord
       </DialogContent>
     </Dialog>
   );
-};
+});
+
+// Ensure display name for debugging
+AccordionDialog.displayName = "AccordionDialog";

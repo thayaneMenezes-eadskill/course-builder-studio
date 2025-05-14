@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 interface ModuleViewerProps {
   title: string;
-  content: string;
+  content: any;
 }
 
 const ModuleViewer = ({ title, content }: ModuleViewerProps) => {
@@ -15,7 +15,7 @@ const ModuleViewer = ({ title, content }: ModuleViewerProps) => {
         <h1 className="text-3xl font-bold mb-4">{title}</h1>
         <TiptapEditor
           content={content}
-          onChange={() => {}} // No-op since this is view-only
+          onChange={() => {}} 
           editable={false}
           placeholder=""
         />

@@ -27,13 +27,12 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
 
   return (
     <TooltipProvider>
-      <div className="bg-background border rounded-b-md p-2 flex flex-wrap gap-1 sticky bottom-0 z-30">
+      <div className="bg-background border items-center rounded-b-md p-2 flex flex-wrap gap-1 sticky bottom-0 z-30">
         <FormatButtons editor={editor} />
         <HeadingDropdownButton editor={editor} />
         <AlignmentDropdown editor={editor} />
-        <ListsDropdown editor={editor} />
+        <ListsDropdown editor={editor} types={["bulletList", "orderedList", "taskList"]} />
         <BlockFormatButtons editor={editor} />
-        
         <MediaButtons 
           editor={editor} 
           showLinkDialog={showLinkDialog}
@@ -43,9 +42,7 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
           showYoutubeDialog={showYoutubeDialog}
           setShowYoutubeDialog={setShowYoutubeDialog}
         />
-
         <div className="border-r mx-1 h-6"></div>
-
         <InteractiveComponentButtons 
           editor={editor}
           showFlashCardDialog={showFlashCardDialog}
@@ -55,7 +52,6 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
           showTabsDialog={showTabsDialog}
           setShowTabsDialog={setShowTabsDialog}
         />
-
         <div className="border-r mx-1 h-6"></div>
 
         <HistoryButtons editor={editor} />

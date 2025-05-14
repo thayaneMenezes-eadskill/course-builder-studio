@@ -1,0 +1,30 @@
+/* Task list: checkbox + texto na mesma linha */
+.ProseMirror ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 1.2em; /* ajuste conforme necessário */
+}
+
+.ProseMirror li[data-type="taskItem"] {
+  list-style: none;
+  /* zera o padding herdado, já aplicado lá em cima no UL */
+  padding-left: 0;
+  display: flex;
+  align-items: center;
+}
+
+.ProseMirror li[data-type="taskItem"] input[type="checkbox"] {
+  margin: 0 0.5em 0 0;
+}
+
+/* força wrapper do ícone+texto a ficarem em linha */
+.tiptap-button-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* remove margens do parágrafo e faz ele ocupar o restante */
+.ProseMirror li[data-type="taskItem"] > p {
+  margin: 0;
+  flex: 1;
+}

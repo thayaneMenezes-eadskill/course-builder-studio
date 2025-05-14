@@ -8,7 +8,7 @@ import {
   AccordionTrigger 
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { Plus, Minus } from 'lucide-react';
+import { Plus, Minus, Trash2 } from 'lucide-react';
 
 export const AccordionComponent: React.FC<NodeViewProps> = ({ node, updateAttributes, editor }) => {
   const { items } = node.attrs;
@@ -69,7 +69,7 @@ export const AccordionComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
                   className="mr-2"
                   disabled={items.length <= 1}
                 >
-                  <Minus size={16} />
+                  <Trash2 color='red' size={16} />
                 </Button>
               </div>
               <div className="px-4 pb-4">

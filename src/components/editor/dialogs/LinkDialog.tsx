@@ -12,7 +12,8 @@ interface LinkDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export const LinkDialog = ({ editor, children, open, onOpenChange }: LinkDialogProps) => {
+export const LinkDialog = React.forwardRef((props: LinkDialogProps, ref) => {
+  const { editor, children, open, onOpenChange } = props;
   const [linkUrl, setLinkUrl] = useState("");
 
   const addLink = () => {
@@ -53,4 +54,7 @@ export const LinkDialog = ({ editor, children, open, onOpenChange }: LinkDialogP
       )}
     </Dialog>
   );
-};
+});
+
+// Ensure display name for debugging
+LinkDialog.displayName = "LinkDialog";

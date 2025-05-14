@@ -1,4 +1,3 @@
-
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
@@ -6,7 +5,6 @@ import Youtube from "@tiptap/extension-youtube";
 import Placeholder from "@tiptap/extension-placeholder";
 import TextAlign from "@tiptap/extension-text-align";
 import Underline from "@tiptap/extension-underline";
-import Strike from "@tiptap/extension-strike";
 import Highlight from "@tiptap/extension-highlight";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
@@ -39,7 +37,6 @@ export const getEditorExtensions = (placeholder = "Start writing...") => [
     types: ["heading", "paragraph"]
   }),
   Underline,
-  Strike,
   Highlight.configure({
     multicolor: true
   }),

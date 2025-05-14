@@ -12,7 +12,8 @@ interface YoutubeDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export const YoutubeDialog = ({ editor, children, open, onOpenChange }: YoutubeDialogProps) => {
+export const YoutubeDialog = React.forwardRef((props: YoutubeDialogProps, ref) => {
+  const { editor, children, open, onOpenChange } = props;
   const [youtubeUrl, setYoutubeUrl] = useState("");
 
   const addYoutubeVideo = () => {
@@ -29,7 +30,7 @@ export const YoutubeDialog = ({ editor, children, open, onOpenChange }: YoutubeD
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog  open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
@@ -52,4 +53,7 @@ export const YoutubeDialog = ({ editor, children, open, onOpenChange }: YoutubeD
       )}
     </Dialog>
   );
-};
+});
+
+// Ensure display name for debugging
+YoutubeDialog.displayName = "YoutubeDialog";

@@ -12,7 +12,8 @@ interface ImageDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export const ImageDialog = ({ editor, children, open, onOpenChange }: ImageDialogProps) => {
+export const ImageDialog = React.forwardRef((props: ImageDialogProps, ref) => {
+  const { editor, children, open, onOpenChange } = props;
   const [imageUrl, setImageUrl] = useState("");
 
   const addImage = () => {
@@ -47,4 +48,7 @@ export const ImageDialog = ({ editor, children, open, onOpenChange }: ImageDialo
       )}
     </Dialog>
   );
-};
+});
+
+// Ensure display name for debugging
+ImageDialog.displayName = "ImageDialog";

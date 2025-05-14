@@ -2,7 +2,7 @@
 export interface Module {
   id: string;
   title: string;
-  content: string;
+  content: any;
   order: number;
   createdAt: Date;
 }
