@@ -14,52 +14,52 @@ import { FlashCardExtension } from "./extensions/FlashCardExtension";
 import { AccordionExtension } from "./extensions/AccordionExtension";
 import { TabsExtension } from "./extensions/TabsExtension";
 
-export const getEditorExtensions = (placeholder: string = "Start writing...") => [
+export const getEditorExtensions = (placeholder = "Start writing...") => [
   StarterKit.configure({
     heading: {
-      levels: [1, 2, 3, 4, 5, 6],
-    },
+      levels: [1, 2, 3, 4, 5, 6]
+    }
   }),
   Link.configure({
     openOnClick: false,
     HTMLAttributes: {
-      class: "text-primary underline cursor-pointer",
-    },
+      class: "text-primary underline cursor-pointer"
+    }
   }),
   Image,
   Youtube.configure({
     controls: true,
     modestBranding: true,
-    allowFullscreen: true,
+    allowFullscreen: true
   }),
   Placeholder.configure({
-    placeholder,
+    placeholder
   }),
   TextAlign.configure({
-    types: ["heading", "paragraph"],
+    types: ["heading", "paragraph"]
   }),
   Underline,
   Strike,
   Highlight.configure({
-    multicolor: true,
+    multicolor: true
   }),
   TaskList,
   TaskItem.configure({
-    nested: true,
+    nested: true
   }),
   FlashCardExtension.configure({
     HTMLAttributes: {
-      class: 'interactive-flashcard',
-    },
+      class: 'interactive-flashcard'
+    }
   }),
   AccordionExtension.configure({
     HTMLAttributes: {
-      class: 'interactive-accordion',
-    },
+      class: 'interactive-accordion'
+    }
   }),
   TabsExtension.configure({
     HTMLAttributes: {
-      class: 'interactive-tabs',
-    },
-  }),
+      class: 'interactive-tabs'
+    }
+  })
 ];
