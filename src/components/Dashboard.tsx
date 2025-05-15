@@ -62,8 +62,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ children }) => {
       />
 
       <div className="flex-1 overflow-hidden relative">
-        <ScrollArea ref={scrollAreaRef} className="h-full sm:px-8 py-6 scroll-area">
-          <div className="mx-auto pb-10">
+        <ScrollArea ref={scrollAreaRef} className="h-full sm:px-8 pt-8 scroll-area">
+          <div className="mx-auto h-full">
             
             {isEditing ? (
              
@@ -85,17 +85,19 @@ export const Dashboard: React.FC<DashboardProps> = ({ children }) => {
               modules.map((module) => (
                 <div
                   key={module.id}
-                  className="ProseMirror mb-4"
+                  className="mb-4 w-full flex flex-col"
                   ref={(el) => (moduleRefs.current[module.id] = el)}
                   data-module-id={module.id}
                 >
                   <h2 className="text-xl font-bold">{module.title}</h2>
-                  <TiptapEditor 
-                    content={module.content} 
-                    editable={false} 
-                    onChange={() => {}} 
-                    placeholder="" 
-                  />
+                  <div className="w-full mt-2">
+                    <TiptapEditor 
+                      content={module.content} 
+                      editable={false} 
+                      onChange={() => {}} 
+                      placeholder="" 
+                    />
+                  </div>
                 </div>
               ))
               

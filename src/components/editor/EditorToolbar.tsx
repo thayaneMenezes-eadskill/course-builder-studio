@@ -27,7 +27,7 @@ export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
 
   return (
     <TooltipProvider>
-      <div className="bg-background border items-center rounded-b-md p-2 flex flex-wrap gap-1 sticky bottom-0 z-30">
+      <div className="bg-background border items-center rounded-b-md w-11/12 p-2 flex flex-wrap gap-1 bottom-0 z-30">
         <FormatButtons editor={editor} />
         <HeadingDropdownButton editor={editor} />
         <AlignmentDropdown editor={editor} />

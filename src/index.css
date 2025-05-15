@@ -107,7 +107,7 @@
 
 /* Editor styles */
 .ProseMirror {
-  @apply min-h-[200px] p-4 outline-none;
+  @apply min-h-[200px]  outline-none;
 }
 
 .ProseMirror p {

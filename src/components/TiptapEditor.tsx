@@ -53,9 +53,9 @@ export const TiptapEditor = ({
   if (!editor) return null;
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-red-50">
       <ScrollArea
-        className={`flex-1 border ${editable ? "rounded-t-md" : "rounded-md"}`}
+        className={`flex-1  ${editable ? "rounded-t-md" : "rounded-md"}`}
       >
         <EditorContent editor={editor} className="min-h-[400px]" />
       </ScrollArea>
