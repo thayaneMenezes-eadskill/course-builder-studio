@@ -3,12 +3,36 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, WandSparkles } from "lucide-react";
+import { toast } from "sonner";
 
 const Landing = () => {
   const navigate = useNavigate();
 
-  const handleCreateNewCourse = () => {
-    navigate("/dashboard");
+  const handleCreateNewCourse = async () => {
+    try {
+      const response = await fetch('https://poc-backend.nxtskill.com.br/v2/course', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: "",
+          status: "DRAFT",
+          author_id: `auth0|${Math.floor(Math.random() * 1000000000)}`,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create course');
+      }
+
+      const data = await response.json();
+      toast.success("Curso criado com sucesso!");
+      navigate("/dashboard", { state: { courseId: data.id } });
+    } catch (error) {
+      console.error('Error creating course:', error);
+      toast.error("Erro ao criar curso. Tente novamente.");
+    }
   };
 
   const handleGenerateWithAI = () => {
