@@ -3,6 +3,7 @@ import { Sidebar } from "./Sidebar";
 import ModuleEditor from "./ModuleEditor";
 import { useModules } from "@/contexts/ModuleContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { TiptapEditor } from "./TiptapEditor";
 
 interface DashboardProps {
   children?: ReactNode;
@@ -61,8 +62,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ children }) => {
       />
 
       <div className="flex-1 overflow-hidden relative">
-        <ScrollArea ref={scrollAreaRef} className="h-full px-4 sm:px-8 py-6 scroll-area">
-          <div className="max-w-4xl mx-auto pb-24">
+        <ScrollArea ref={scrollAreaRef} className="h-full sm:px-8 py-6 scroll-area">
+          <div className="mx-auto pb-10">
             
             {isEditing ? (
              
@@ -89,7 +90,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ children }) => {
                   data-module-id={module.id}
                 >
                   <h2 className="text-xl font-bold">{module.title}</h2>
-                  <div dangerouslySetInnerHTML={{ __html: module.content }} />
+                  <TiptapEditor 
+                    content={module.content} 
+                    editable={false} 
+                    onChange={() => {}} 
+                    placeholder="" 
+                  />
                 </div>
               ))
               

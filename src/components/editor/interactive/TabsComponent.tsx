@@ -3,6 +3,7 @@ import { NodeViewWrapper, NodeViewProps } from '@tiptap/react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Plus, Minus, Trash2 } from 'lucide-react';
+import { TiptapEditor } from '../../TiptapEditor';
 
 export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes, editor }) => {
   const { tabs } = node.attrs;
@@ -132,7 +133,12 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
         </div>
         {localTabs && localTabs.map((tab, index) => (
           <TabsContent key={index} value={`tab-${index}`}>
-            <div dangerouslySetInnerHTML={{ __html: tab.content }} />
+            <TiptapEditor 
+              content={tab.content} 
+              editable={false} 
+              onChange={() => {}} 
+              placeholder="" 
+            />
           </TabsContent>
         ))}
 
