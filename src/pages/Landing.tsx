@@ -1,14 +1,37 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, WandSparkles } from "lucide-react";
 import { toast } from "sonner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const Landing = () => {
   const navigate = useNavigate();
+  const [titleDialogOpen, setTitleDialogOpen] = useState(false);
+  const [courseTitle, setCourseTitle] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [titleError, setTitleError] = useState("");
 
   const handleCreateNewCourse = async () => {
+    setTitleDialogOpen(true);
+  };
+
+  const validateAndSubmit = async () => {
+    // Clear previous error
+    setTitleError("");
+
+    // Validate title
+    if (!courseTitle || courseTitle.trim().length < 3) {
+      setTitleError("O título deve ter pelo menos 3 caracteres");
+      return;
+    }
+
+    setIsSubmitting(true);
+
     try {
       const response = await fetch('https://poc-backend.nxtskill.com.br/v2/course', {
         method: 'POST',
@@ -16,7 +39,7 @@ const Landing = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: "",
+          title: courseTitle.trim(),
           status: "DRAFT",
           author_id: `auth0|${Math.floor(Math.random() * 1000000000)}`,
         }),
@@ -28,10 +51,13 @@ const Landing = () => {
 
       const data = await response.json();
       toast.success("Curso criado com sucesso!");
+      setTitleDialogOpen(false);
       navigate("/dashboard", { state: { courseId: data.id } });
     } catch (error) {
       console.error('Error creating course:', error);
       toast.error("Erro ao criar curso. Tente novamente.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -74,6 +100,45 @@ const Landing = () => {
           </Card>
         </div>
       </div>
+
+      {/* Course Title Dialog */}
+      <Dialog open={titleDialogOpen} onOpenChange={setTitleDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Criar Novo Curso</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="course-title" className="text-right">
+                Título
+              </Label>
+              <div className="col-span-3">
+                <Input
+                  id="course-title"
+                  placeholder="Título do curso"
+                  value={courseTitle}
+                  onChange={(e) => setCourseTitle(e.target.value)}
+                  className={titleError ? "border-destructive" : ""}
+                />
+                {titleError && (
+                  <p className="text-sm text-destructive mt-1">{titleError}</p>
+                )}
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setTitleDialogOpen(false)}>
+              Cancelar
+            </Button>
+            <Button 
+              onClick={validateAndSubmit} 
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Criando..." : "Criar Curso"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
