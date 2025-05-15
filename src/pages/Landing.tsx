@@ -4,20 +4,24 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, WandSparkles } from "lucide-react";
 import { toast } from "sonner";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 const Landing = () => {
   const navigate = useNavigate();
-  const [titleDialogOpen, setTitleDialogOpen] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
   const [courseTitle, setCourseTitle] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [titleError, setTitleError] = useState("");
 
-  const handleCreateNewCourse = async () => {
-    setTitleDialogOpen(true);
+  const handleCreateNewCourse = () => {
+    setIsFlipped(true);
+  };
+
+  const handleCancel = () => {
+    setIsFlipped(false);
+    setCourseTitle("");
+    setTitleError("");
   };
 
   const validateAndSubmit = async () => {
@@ -51,7 +55,6 @@ const Landing = () => {
 
       const data = await response.json();
       toast.success("Curso criado com sucesso!");
-      setTitleDialogOpen(false);
       navigate("/dashboard", { state: { courseId: data.id } });
     } catch (error) {
       console.error('Error creating course:', error);
@@ -69,76 +72,81 @@ const Landing = () => {
 
   return (
     <div className="flex items-center justify-center w-full h-screen bg-white">
-      <div className="w-[80%] md:w-[70%] lg:w-[60%] h-[60%] rounded-lg shadow-lg bg-white p-8 flex flex-col justify-center">
-        <h1 className="text-3xl font-heading font-bold text-center mb-8">Welcome to Course Builder Studio</h1>
-        
-        <div className="flex flex-col md:flex-row justify-center items-center gap-6 mt-8">
-          <Card 
-            className="w-full md:w-1/2 cursor-pointer hover:shadow-xl transition-shadow duration-300 border-2 hover:border-primary"
-            onClick={handleCreateNewCourse}
-          >
-            <CardContent className="p-6 flex flex-col items-center text-center">
-              <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 mt-4">
-                <Plus size={32} className="text-primary" />
-              </div>
-              <h2 className="text-xl font-semibold mb-2">Criar Novo Curso</h2>
-              <p className="text-muted-foreground">Comece um novo curso do zero</p>
-            </CardContent>
-          </Card>
+      <div className={`w-[80%] md:w-[70%] lg:w-[60%] h-[60%] perspective-1000 transition-all duration-500 ${isFlipped ? "pointer-events-none" : ""}`}>
+        <div className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${isFlipped ? "rotate-y-180" : ""}`}>
+          {/* Front side - Welcome */}
+          <div className={`absolute w-full h-full backface-hidden rounded-lg shadow-lg bg-white p-8 flex flex-col justify-center ${isFlipped ? "invisible" : ""}`}>
+            <h1 className="text-3xl font-heading font-bold text-center mb-8">Welcome to Course Builder Studio</h1>
+            
+            <div className="flex flex-col md:flex-row justify-center items-center gap-6 mt-8">
+              <Card 
+                className="w-full md:w-1/2 cursor-pointer hover:shadow-xl transition-shadow duration-300 border-2 hover:border-primary"
+                onClick={handleCreateNewCourse}
+              >
+                <CardContent className="p-6 flex flex-col items-center text-center">
+                  <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 mt-4">
+                    <Plus size={32} className="text-primary" />
+                  </div>
+                  <h2 className="text-xl font-semibold mb-2">Criar Novo Curso</h2>
+                  <p className="text-muted-foreground">Comece um novo curso do zero</p>
+                </CardContent>
+              </Card>
 
-          <Card 
-            className="w-full md:w-1/2 cursor-pointer hover:shadow-xl transition-shadow duration-300 border-2 hover:border-primary"
-            onClick={handleGenerateWithAI}
-          >
-            <CardContent className="p-6 flex flex-col items-center text-center">
-              <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 mt-4">
-                <WandSparkles size={32} className="text-primary" />
-              </div>
-              <h2 className="text-xl font-semibold mb-2">Gerar Curso com IA</h2>
-              <p className="text-muted-foreground">Use nossa IA para criar um curso rapidamente</p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+              <Card 
+                className="w-full md:w-1/2 cursor-pointer hover:shadow-xl transition-shadow duration-300 border-2 hover:border-primary"
+                onClick={handleGenerateWithAI}
+              >
+                <CardContent className="p-6 flex flex-col items-center text-center">
+                  <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 mt-4">
+                    <WandSparkles size={32} className="text-primary" />
+                  </div>
+                  <h2 className="text-xl font-semibold mb-2">Gerar Curso com IA</h2>
+                  <p className="text-muted-foreground">Use nossa IA para criar um curso rapidamente</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
 
-      {/* Course Title Dialog */}
-      <Dialog open={titleDialogOpen} onOpenChange={setTitleDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Criar Novo Curso</DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="course-title" className="text-right">
-                Título
-              </Label>
-              <div className="col-span-3">
-                <Input
-                  id="course-title"
-                  placeholder="Título do curso"
-                  value={courseTitle}
-                  onChange={(e) => setCourseTitle(e.target.value)}
-                  className={titleError ? "border-destructive" : ""}
-                />
-                {titleError && (
-                  <p className="text-sm text-destructive mt-1">{titleError}</p>
-                )}
+          {/* Back side - Course Title Form */}
+          <div className="absolute w-full h-full backface-hidden rounded-lg shadow-lg bg-white p-8 flex flex-col justify-center rotate-y-180">
+            <div className="max-w-md mx-auto w-full">
+              <h2 className="text-2xl font-bold text-center mb-6">Qual o título do seu curso?</h2>
+              
+              <div className="space-y-4">
+                <div>
+                  <Input
+                    id="course-title"
+                    placeholder="Digite o título do curso"
+                    value={courseTitle}
+                    onChange={(e) => setCourseTitle(e.target.value)}
+                    className={`text-lg ${titleError ? "border-destructive" : ""}`}
+                  />
+                  {titleError && (
+                    <p className="text-sm text-destructive mt-1">{titleError}</p>
+                  )}
+                </div>
+                
+                <div className="flex justify-between pt-4">
+                  <Button 
+                    variant="outline" 
+                    onClick={handleCancel}
+                    className="w-1/2 mr-2"
+                  >
+                    Cancelar
+                  </Button>
+                  <Button 
+                    onClick={validateAndSubmit} 
+                    disabled={isSubmitting}
+                    className="w-1/2 ml-2"
+                  >
+                    {isSubmitting ? "Criando..." : "Criar Curso"}
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setTitleDialogOpen(false)}>
-              Cancelar
-            </Button>
-            <Button 
-              onClick={validateAndSubmit} 
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Criando..." : "Criar Curso"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        </div>
+      </div>
     </div>
   );
 };
