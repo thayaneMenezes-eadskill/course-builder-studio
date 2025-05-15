@@ -18,8 +18,8 @@ import {
   useRole,
   useTypeahead,
 } from "@floating-ui/react"
-import "@/components/tiptap-ui-primitive/dropdown-menu/dropdown-menu.scss"
-import { Separator } from "@/components/tiptap-ui-primitive/separator"
+import "../../../../components/tiptap-ui-primitive/dropdown-menu/dropdown-menu.scss"
+import { Separator } from "../../../../components/tiptap-ui-primitive/separator/separator"
 
 interface DropdownMenuOptions {
   initialOpen?: boolean
