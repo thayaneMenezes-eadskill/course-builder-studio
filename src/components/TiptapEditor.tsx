@@ -53,7 +53,7 @@ export const TiptapEditor = ({
   if (!editor) return null;
 
   return (
-    <div className="flex flex-col h-full bg-red-50">
+    <div className="flex flex-col h-full">
       <ScrollArea
         className={`flex-1  ${editable ? "rounded-t-md" : "rounded-md"}`}
       >
