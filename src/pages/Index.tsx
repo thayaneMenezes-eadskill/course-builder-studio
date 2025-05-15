@@ -1,8 +1,5 @@
-
 import { Dashboard } from "@/components/Dashboard";
 
-const Index = () => {
-  return <Dashboard />;
-};
+const Index = () => <Dashboard />;
 
 export default Index;

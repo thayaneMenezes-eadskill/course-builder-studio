@@ -1,18 +1,16 @@
-
 import React, { useCallback, useRef, useState, useEffect, ReactNode } from "react";
 import { Sidebar } from "./Sidebar";
 import ModuleEditor from "./ModuleEditor";
 import { useModules } from "@/contexts/ModuleContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { TiptapEditor } from "./TiptapEditor";
-import { Loader2 } from "lucide-react";
 
 interface DashboardProps {
   children?: ReactNode;
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({ children }) => {
-  const { modules, activeModuleId, setActiveModuleId, loading } = useModules();
+  const { modules, activeModuleId, setActiveModuleId } = useModules();
   const [isEditing, setIsEditing] = useState(false);
   const moduleRefs = useRef<Record<string, HTMLElement | null>>({});
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -55,7 +53,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ children }) => {
   }, [modules, isEditing, setActiveModuleId]);
 
   return (
-    <div className="flex h-screen overflow-hidden">
+       <div className="flex h-screen overflow-hidden">
       <Sidebar
         isEditing={isEditing}
         setIsEditing={setIsEditing}
@@ -64,60 +62,54 @@ export const Dashboard: React.FC<DashboardProps> = ({ children }) => {
       />
 
       <div className="flex-1 overflow-hidden relative">
-        {loading ? (
-          <div className="flex items-center justify-center h-full">
-            <Loader2 className="mr-2 h-8 w-8 animate-spin" />
-            <span className="text-lg">Loading modules...</span>
-          </div>
-        ) : (
-          <ScrollArea ref={scrollAreaRef} className="h-full sm:px-8 py-6 scroll-area">
-            <div className="mx-auto pb-10">
-              
-              {isEditing ? (
-               
-                activeModuleId ? (
-                  <div
-                    className="ProseMirror mb-4"
-                    ref={(el) => (moduleRefs.current[activeModuleId] = el)}
-                  >
-                    <ModuleEditor moduleId={activeModuleId} onSave={handleSave} />
-                  </div>
-                ) : (
-                  <p>Nenhum módulo selecionado para editar.</p>
-                )
-              
-              ) : children ? (
-                children
-                
-              ) : activeModuleId ? (
-                modules.map((module) => (
-                  <div
-                    key={module.id}
-                    className="ProseMirror mb-4"
-                    ref={(el) => (moduleRefs.current[module.id] = el)}
-                    data-module-id={module.id}
-                  >
-                    <h2 className="text-xl font-bold">{module.title}</h2>
-                    <TiptapEditor 
-                      content={module.content} 
-                      editable={false} 
-                      onChange={() => {}} 
-                      placeholder="" 
-                    />
-                  </div>
-                ))
-                
-              ) : (
-                <div className="text-center py-12">
-                  <h2 className="text-2xl font-bold">Nenhum módulo selecionado</h2>
-                  <p className="text-muted-foreground">
-                    Selecione um módulo na barra lateral ou crie um novo.
-                  </p>
+        <ScrollArea ref={scrollAreaRef} className="h-full sm:px-8 py-6 scroll-area">
+          <div className="mx-auto pb-10">
+            
+            {isEditing ? (
+             
+              activeModuleId ? (
+                <div
+                  className="ProseMirror mb-4"
+                  ref={(el) => (moduleRefs.current[activeModuleId] = el)}
+                >
+                  <ModuleEditor moduleId={activeModuleId} onSave={handleSave} />
                 </div>
-              )}
-            </div>
-          </ScrollArea>
-        )}
+              ) : (
+                <p>Nenhum módulo selecionado para editar.</p>
+              )
+            
+            ) : children ? (
+              children
+              
+            ) : activeModuleId ? (
+              modules.map((module) => (
+                <div
+                  key={module.id}
+                  className="ProseMirror mb-4"
+                  ref={(el) => (moduleRefs.current[module.id] = el)}
+                  data-module-id={module.id}
+                >
+                  <h2 className="text-xl font-bold">{module.title}</h2>
+                  <TiptapEditor 
+                    content={module.content} 
+                    editable={false} 
+                    onChange={() => {}} 
+                    placeholder="" 
+                  />
+                </div>
+              ))
+              
+            ) : (
+              <div className="text-center py-12">
+                <h2 className="text-2xl font-bold">Nenhum módulo selecionado</h2>
+                <p className="text-muted-foreground">
+                  Selecione um módulo na barra lateral ou crie um novo.
+                </p>
+              </div>
+            )}
+
+          </div>
+        </ScrollArea>
       </div>
     </div>
   );
