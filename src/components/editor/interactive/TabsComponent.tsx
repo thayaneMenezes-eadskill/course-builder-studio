@@ -81,7 +81,7 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
                 </TabsTrigger>
               ))}
             </TabsList>
-            
+
             <Button
               variant="ghost"
               size="icon"
@@ -92,7 +92,7 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
               <Plus size={16} />
             </Button>
           </div>
-          
+
           {localTabs && localTabs.map((tab, index) => (
             <TabsContent key={index} value={`tab-${index}`}>
               <textarea
@@ -111,23 +111,31 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
   return (
     <NodeViewWrapper className="my-4">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList>
-          {localTabs && localTabs.map((tab, index) => (
-            <TabsTrigger
-              key={index}
-              value={`tab-${index}`}
-              onClick={() => setActiveTab(`tab-${index}`)}
-            >
-              {tab.title}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        
+        <div className="flex items-center ">
+          <TabsList className="flex-1">
+            {localTabs && localTabs.map((tab, index) => (
+              <div
+                className="w-full flex items-center px-3 py-1.5 text-gray-800"
+              >
+                <TabsTrigger
+                  key={index}
+                  className=' w-full'
+                  value={`tab-${index}`}
+                  onClick={() => setActiveTab(`tab-${index}`)}
+                >
+                  {tab.title}
+                </TabsTrigger>
+              </div>
+            ))}
+          </TabsList>
+
+        </div>
         {localTabs && localTabs.map((tab, index) => (
           <TabsContent key={index} value={`tab-${index}`}>
             <div dangerouslySetInnerHTML={{ __html: tab.content }} />
           </TabsContent>
         ))}
+
       </Tabs>
     </NodeViewWrapper>
   );

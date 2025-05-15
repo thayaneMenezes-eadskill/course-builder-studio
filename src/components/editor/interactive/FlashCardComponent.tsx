@@ -1,13 +1,19 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NodeViewWrapper, NodeViewProps } from '@tiptap/react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { MousePointerClick } from 'lucide-react'; // Ícone de cursor
 
 export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttributes, editor }) => {
   const [flipped, setFlipped] = useState(false);
+  const [showHint, setShowHint] = useState(true);
   const { front, back } = node.attrs;
   const isEditable = editor.isEditable;
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowHint(false), 5000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleFlip = () => {
     setFlipped(!flipped);
@@ -33,7 +39,7 @@ export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
   };
 
   return (
-    <NodeViewWrapper className="my-4">
+    <NodeViewWrapper className="my-2">
       <div 
         className="relative min-h-[200px] cursor-pointer" 
         onClick={handleClick}
@@ -53,7 +59,12 @@ export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
             ) : (
               <div className="text-center">
                 <p>{front}</p>
-                <div className="mt-4 text-sm text-muted-foreground">Clique para virar</div>
+                {showHint && (
+                  <div className="mt-4 text-sm text-muted-foreground flex items-center space-x-1 animate-pulse">
+                    <MousePointerClick className="w-4 h-4" />
+                    <span>Clique para virar</span>
+                  </div>
+                )}
               </div>
             )}
           </CardContent>
@@ -74,7 +85,12 @@ export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
             ) : (
               <div className="text-center">
                 <p>{back}</p>
-                <div className="mt-4 text-sm text-muted-foreground">Clique para virar</div>
+                {showHint && (
+                  <div className="mt-4 text-sm text-muted-foreground flex items-center space-x-1 animate-pulse">
+                    <MousePointerClick className="w-4 h-4" />
+                    <span>Clique para virar</span>
+                  </div>
+                )}
               </div>
             )}
           </CardContent>
