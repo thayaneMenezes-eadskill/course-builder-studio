@@ -7,13 +7,18 @@ import { TiptapEditor } from "./TiptapEditor";
 
 interface DashboardProps {
   children?: ReactNode;
+  initialTitle?: string;
+  initialContent?: string;
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ children }) => {
+export const Dashboard: React.FC<DashboardProps> = ({ children, initialTitle, initialContent }) => {
   const { modules, activeModuleId, setActiveModuleId } = useModules();
   const [isEditing, setIsEditing] = useState(false);
   const moduleRefs = useRef<Record<string, HTMLElement | null>>({});
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  // Use modules from context directly for both edit and view modes
+  const modulesToRender = modules;
 
   const scrollToModule = useCallback((moduleId: string) => {
     const el = moduleRefs.current[moduleId];
@@ -55,6 +60,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ children }) => {
   return (
        <div className="flex h-screen overflow-hidden">
       <Sidebar
+        courseTitle={initialTitle}
         isEditing={isEditing}
         setIsEditing={setIsEditing}
         onModuleClick={scrollToModule}
@@ -82,7 +88,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ children }) => {
               children
               
             ) : activeModuleId ? (
-              modules.map((module) => (
+              modulesToRender.map((module) => (
                 <div
                   key={module.id}
                   className="mb-4 w-full flex flex-col"
@@ -90,22 +96,22 @@ export const Dashboard: React.FC<DashboardProps> = ({ children }) => {
                   data-module-id={module.id}
                 >
                   <h2 className="text-xl font-bold">{module.title}</h2>
-                  <div className="w-full mt-2">
+                  <div className="w-full h-full mt-2">
                     <TiptapEditor 
                       content={module.content} 
                       editable={false} 
-                      onChange={() => {}} 
-                      placeholder="" 
+                      onChange={() => {}}  
                     />
                   </div>
+                  <hr className="mb-10 mt-8" />
                 </div>
               ))
               
             ) : (
               <div className="text-center py-12">
                 <h2 className="text-2xl font-bold">Nenhum módulo selecionado</h2>
-                <p className="text-muted-foreground">
-                  Selecione um módulo na barra lateral ou crie um novo.
+                <p className="text-muted-foreground"> 
+                 Crie um novo módulo para começar a editar.
                 </p>
               </div>
             )}

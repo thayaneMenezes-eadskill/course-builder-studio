@@ -21,12 +21,11 @@ export const TiptapEditor = ({
     extensions: getEditorExtensions(placeholder),
     content,
     onUpdate: ({ editor }) => {
-      onChange(editor.getJSON());
+      onChange(editor.getHTML());
     },
     editable,
   });
 
-  // sempre via microtask, para não disparar flushSync dentro do hook
   useEffect(() => {
     
     if (!editor) return;
@@ -53,13 +52,17 @@ export const TiptapEditor = ({
   if (!editor) return null;
 
   return (
-    <div className="flex flex-col h-full">
+    <div className=" flex flex-col ">
       <ScrollArea
-        className={`flex-1  ${editable ? "rounded-t-md" : "rounded-md"}`}
+        className={`flex-1 ${editable ? "rounded-t-md pb-20" : "rounded-md pb-0"}`}
       >
-        <EditorContent editor={editor} className="min-h-[400px]" />
+        <EditorContent editor={editor} />
       </ScrollArea>
-      {editable && <EditorToolbar editor={editor} />}
+      {editable && (
+        <div className="fixed bottom-0 left-64 w-[calc(100%-16rem)] z-50">
+          <EditorToolbar editor={editor} />
+        </div>
+      )}
     </div>
   );
 };

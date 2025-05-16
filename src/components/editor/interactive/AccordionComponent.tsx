@@ -117,13 +117,11 @@ export const AccordionComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
       <Accordion type="single" collapsible className="w-full">
         {items.map((item, index) => (
           <AccordionItem key={index} value={`item-${index}`}>
-            <AccordionTrigger>{item.title}</AccordionTrigger>
-            <AccordionContent>
-              <TiptapEditor 
-                content={item.content} 
-                editable={false} 
-                onChange={() => {}} 
-                placeholder="" 
+            <AccordionTrigger className="px-2 py-1">{item.title}</AccordionTrigger>
+            <AccordionContent className="p-2">
+              <div
+                className="prose"
+                dangerouslySetInnerHTML={{ __html: item.content }}
               />
             </AccordionContent>
           </AccordionItem>

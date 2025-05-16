@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { Module, NewModule } from "@/types/module";
 import { v4 as uuidv4 } from "uuid";
@@ -12,73 +11,96 @@ interface ModuleContextType {
   updateModule: (id: string, data: Partial<Module>) => void;
   deleteModule: (id: string) => void;
   getModuleById: (id: string) => Module | undefined;
+  saveModules: () => Promise<void>;
 }
 
 const ModuleContext = createContext<ModuleContextType | undefined>(undefined);
-
-const STORAGE_KEY = "course-builder-modules";
 
 export const ModuleProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [modules, setModules] = useState<Module[]>([]);
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
 
   useEffect(() => {
-    try {
-      const storedModules = localStorage.getItem(STORAGE_KEY);
-      if (storedModules) {
-        const parsedModules = JSON.parse(storedModules).map((module: any) => ({
-          ...module,
-          createdAt: new Date(module.createdAt)
-        }));
-        
-        setModules(parsedModules);
-
-        if (parsedModules.length > 0 && !activeModuleId) {
-          setActiveModuleId(parsedModules[0].id);
+    const loadModules = async () => {
+      const courseId = localStorage.getItem('courseId');
+      if (!courseId) return;
+      try {
+        const response = await fetch(`https://poc-backend.nxtskill.com.br/v2/course/${courseId}`);
+        if (!response.ok) throw new Error('Failed to load course');
+        const data = await response.json();
+        // extract modules from course content payload
+        let mods: Module[] = [];
+        if (data.content) {
+          const rawModules =
+            typeof data.content === 'string'
+              ? (() => { try { return JSON.parse(data.content).modules; } catch { return []; } })()
+              : data.content.modules || [];
+          // assign ids and order to each module
+          mods = rawModules.map((m: any, idx: number) => ({
+            id: m.id || uuidv4(),
+            title: m.title,
+            content: m.content,
+            order: idx,
+            createdAt: new Date(),
+          }));
         }
-      } else {
-        const defaultModule: Module = {
-          id: uuidv4(),
-          title: "Introduction",
-          content: "<h1>Welcome to your course</h1><p>Start editing this module.</p>",
-          order: 0,
-          createdAt: new Date()
-        };
-        
-        setModules([defaultModule]);
-        setActiveModuleId(defaultModule.id);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify([defaultModule]));
+        setModules(mods);
+        if (mods.length > 0) {
+          setActiveModuleId(mods[0].id);
+        }
+      } catch (err) {
+        console.error('Error loading modules:', err);
+        toast.error('Erro ao carregar módulos');
       }
-    } catch (error) {
-      console.error("Error loading modules from localStorage:", error);
-      toast.error("Failed to load course modules");
-    }
+    };
+    loadModules();
   }, []);
 
-  useEffect(() => {
-    if (modules.length > 0) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(modules));
+
+  const saveModules = async () => {
+    const courseId = localStorage.getItem('courseId');
+    const courseTitle = localStorage.getItem('courseTitle') || '';
+    if (!courseId) {
+      toast.error('Course ID missing');
+      return;
     }
-  }, [modules]);
+    try {
+  
+      const payload = {
+        title: courseTitle,
+        content: {
+          modules: modules.map(m => ({ title: m.title, content: m.content })),
+        },
+      };
+      const response = await fetch(
+        `https://poc-backend.nxtskill.com.br/v2/course/${courseId}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }
+      );
+      if (!response.ok) throw new Error('Failed to save modules');
+      toast.success('Módulos atualizados com sucesso');
+    } catch (error) {
+      console.error('Error saving modules:', error);
+      toast.error('Erro ao atualizar módulos');
+    }
+  };
 
   const addModule = (module: NewModule) => {
-    const newModule: Module = {
-      ...module,
-      id: uuidv4(),
-      createdAt: new Date()
-    };
-
-    setModules(prev => [...prev, newModule]);
+    const newModule: Module = { ...module, id: uuidv4(), createdAt: new Date() };
+    const updatedModules = [...modules, newModule];
+    setModules(updatedModules);
     setActiveModuleId(newModule.id);
-    toast.success("Module created successfully");
+    toast.success('Módulo criado (não salvo)');
   };
 
   const updateModule = (id: string, data: Partial<Module>) => {
-    setModules(prev => 
-      prev.map(module => 
-        module.id === id ? { ...module, ...data } : module
-      )
+    const updatedModules = modules.map(module =>
+      module.id === id ? { ...module, ...data } : module
     );
+    setModules(updatedModules);
   };
 
   const deleteModule = (id: string) => {
@@ -107,7 +129,8 @@ export const ModuleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     addModule,
     updateModule,
     deleteModule,
-    getModuleById
+    getModuleById,
+    saveModules
   };
 
   return <ModuleContext.Provider value={value}>{children}</ModuleContext.Provider>;

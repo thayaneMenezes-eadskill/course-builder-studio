@@ -53,7 +53,7 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
 
   if (isEditable) {
     return (
-      <NodeViewWrapper className="my-4">
+      <NodeViewWrapper className="mt-4 mb-0">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex items-center">
             <TabsList className="flex-1">
@@ -95,9 +95,9 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
           </div>
 
           {localTabs && localTabs.map((tab, index) => (
-            <TabsContent key={index} value={`tab-${index}`}>
+            <TabsContent key={index} value={`tab-${index}`} className="mt-0 p-0 h-auto">
               <textarea
-                className="w-full p-2 bg-transparent border rounded resize-none min-h-[100px] mt-2"
+                className="w-full p-1 bg-transparent border rounded resize-none mt-0"
                 value={tab.content}
                 onChange={(e) => handleContentChange(index, e.target.value)}
                 placeholder="Conteúdo da tab"
@@ -110,7 +110,7 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
   }
 
   return (
-    <NodeViewWrapper className="my-4">
+    <NodeViewWrapper className="mt-0 mb-0">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="flex items-center ">
           <TabsList className="flex-1">
@@ -132,7 +132,7 @@ export const TabsComponent: React.FC<NodeViewProps> = ({ node, updateAttributes,
 
         </div>
         {localTabs && localTabs.map((tab, index) => (
-          <TabsContent key={index} value={`tab-${index}`}>
+          <TabsContent key={index} value={`tab-${index}`} className="mt-0 p-0 h-auto">
             <TiptapEditor 
               content={tab.content} 
               editable={false} 

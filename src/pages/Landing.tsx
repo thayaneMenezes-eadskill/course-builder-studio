@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,37 +24,24 @@ const Landing = () => {
   };
 
   const validateAndSubmit = async () => {
-    // Clear previous error
     setTitleError("");
-
-    // Validate title
     if (!courseTitle || courseTitle.trim().length < 3) {
       setTitleError("O título deve ter pelo menos 3 caracteres");
       return;
     }
-
     setIsSubmitting(true);
-
     try {
       const response = await fetch('https://poc-backend.nxtskill.com.br/v2/course', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: courseTitle.trim(),
-          status: "DRAFT",
-          author_id: `auth0|${Math.floor(Math.random() * 1000000000)}`,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: courseTitle.trim(), content: "" }),
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to create course');
-      }
-
+      if (!response.ok) throw new Error('Failed to create course');
       const data = await response.json();
       toast.success("Curso criado com sucesso!");
-      navigate("/dashboard", { state: { courseId: data.id } });
+      localStorage.setItem('courseId', data.id);
+      localStorage.setItem('courseTitle', data.title);
+      navigate("/dashboard", { state: { courseId: data.id, courseTitle: data.title, courseContent: data.content } });
     } catch (error) {
       console.error('Error creating course:', error);
       toast.error("Erro ao criar curso. Tente novamente.");
@@ -65,18 +51,16 @@ const Landing = () => {
   };
 
   const handleGenerateWithAI = () => {
-    // For now, this also navigates to dashboard
-    // Could be updated later to go to an AI course generation page
     navigate("/dashboard");
   };
 
   return (
     <div className="flex items-center justify-center w-full h-screen bg-white">
-      <div className={`w-[80%] md:w-[70%] lg:w-[60%] h-[60%] perspective-1000 transition-all duration-500 ${isFlipped ? "pointer-events-none" : ""}`}>
+      <div className="w-[80%] md:w-[70%] h-[60%] perspective-1000 transition-all duration-500">
         <div className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${isFlipped ? "rotate-y-180" : ""}`}>
           {/* Front side - Welcome */}
-          <div className={`absolute w-full h-full backface-hidden rounded-lg shadow-lg bg-white p-8 flex flex-col justify-center ${isFlipped ? "invisible" : ""}`}>
-            <h1 className="text-3xl font-heading font-bold text-center mb-8">Welcome to Course Builder Studio</h1>
+          <div className={`absolute w-full h-full backface-hidden rounded-lg shadow-lg bg-white p-8 flex flex-col justify-center ${isFlipped ? "hidden" : ""}`}>
+            <h1 className="text-3xl font-heading font-bold text-center mb-8">Bem-vindo(a) ao MagicAuthor!</h1>
             
             <div className="flex flex-col md:flex-row justify-center items-center gap-6 mt-8">
               <Card 
@@ -108,7 +92,7 @@ const Landing = () => {
           </div>
 
           {/* Back side - Course Title Form */}
-          <div className="absolute w-full h-full backface-hidden rounded-lg shadow-lg bg-white p-8 flex flex-col justify-center rotate-y-180">
+          <div className={`absolute w-full h-full backface-hidden rounded-lg shadow-lg bg-white p-8 flex flex-col justify-center rotate-y-180 ${isFlipped ? "" : "hidden"}`}>
             <div className="max-w-md mx-auto w-full">
               <h2 className="text-2xl font-bold text-center mb-6">Qual o título do seu curso?</h2>
               

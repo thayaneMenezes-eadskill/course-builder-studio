@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -17,16 +16,18 @@ interface SidebarProps {
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   onModuleClick: (moduleId: string) => void;
   activeModuleId: string;
+  courseTitle?: string;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ 
   isEditing, 
   setIsEditing, 
   onModuleClick,
-  activeModuleId 
+  activeModuleId,
+  courseTitle
 }) => {
   const [collapsed, setCollapsed] = useState(false);
-  const { modules, addModule, deleteModule, setActiveModuleId } = useModules();
+  const { modules, addModule, deleteModule, setActiveModuleId, saveModules } = useModules();
 
   const handleAddModule = () => {
     const newOrder = modules.length > 0 
@@ -79,7 +80,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       <div className="p-4">
         <Button
-          onClick={() => setIsEditing(!isEditing)}
+          onClick={async () => {
+            if (isEditing) {
+              // on save click
+              await saveModules();
+            }
+            setIsEditing(!isEditing);
+          }}
           className="w-full bg-sidebar-primary hover:bg-sidebar-primary/90 text-sidebar-primary-foreground mb-2"
         >
           {collapsed ? (
@@ -108,6 +115,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </>
           )}
         </Button>
+        {/* Course title display */}
+        {courseTitle && (
+          <div className="mt-4 px-1 text-sm font-semibold text-sidebar-foreground truncate">
+            {courseTitle}
+          </div>
+        )}
       </div>
 
       <ScrollArea className="flex-1">

@@ -39,13 +39,13 @@ export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
   };
 
   return (
-    <NodeViewWrapper className="my-2">
+    <NodeViewWrapper className="mt-4 mb-8">
       <div 
-        className="relative min-h-[200px] cursor-pointer" 
+        className="relative cursor-pointer" 
         onClick={handleClick}
       >
         <Card 
-          className={`transition-all duration-300 ${flipped ? 'opacity-0 absolute inset-0 pointer-events-none' : 'opacity-100'}`}
+          className={`transition-all py-10 duration-300 ${flipped ? 'opacity-0 absolute inset-0 pointer-events-none' : 'opacity-100'}`}
         >
           <CardContent className="p-6 flex flex-col items-center">
             {isEditable ? (
@@ -57,7 +57,7 @@ export const FlashCardComponent: React.FC<NodeViewProps> = ({ node, updateAttrib
                 onClick={handleEditorInputClick}
               />
             ) : (
-              <div className="text-center">
+              <div className="text-center flex flex-col items-center">
                 <p>{front}</p>
                 {showHint && (
                   <div className="mt-4 text-sm text-muted-foreground flex items-center space-x-1 animate-pulse">
